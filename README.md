@@ -17,16 +17,22 @@ Home Manager を用いて dotfiles を管理するリポジトリです。
 │   ├── packages.nix     # パッケージ管理
 │   ├── zsh.nix          # zsh 設定
 │   ├── git.nix          # Git 設定
-│   └── neovim.nix       # Neovim 設定
+│   ├── neovim.nix       # Neovim 設定
+│   └── brew-casks.nix   # Homebrew Casks (brew-nix)
 ├── dotfiles/            # 生の dotfiles
 │   ├── zsh/
 │   │   ├── extra.zsh    # 追加の zsh 設定
 │   │   └── prompt.zsh   # プロンプト設定
 │   ├── git/
 │   │   └── gitconfig    # Git 設定ファイル
-│   └── nvim/
-│       ├── init.lua     # Neovim メイン設定
-│       └── lua/         # Lua モジュール
+│   ├── nvim/
+│   │   ├── init.lua     # Neovim メイン設定
+│   │   └── lua/         # Lua モジュール
+│   ├── nix/
+│   │   ├── devshell.nix    # Nix devshell テンプレート
+│   │   └── VERSION_MANAGEMENT.md  # バージョン管理ドキュメント
+│   └── homebrew/
+│       └── Brewfile        # Homebrew に残すパッケージ
 └── README.md            # このファイル
 ```
 
@@ -246,6 +252,74 @@ nix develop
 # export PATH="$HOME/.anyenv/bin:$PATH"
 # eval "$(anyenv init - zsh)"
 ```
+
+## brew-nix: Homebrew Casks を Nix で管理
+
+**brew-nix** は Homebrew をインストールせずに Homebrew Casks（GUI アプリ）を完全に Nix で管理できるツールです。
+
+### メリット
+
+- **Homebrew 不要**: 完全に Nix で管理
+- **Type-safe**: 間違ったパッケージ名でエラーが出る
+- **宣言的**: Nix の再現性を享受
+
+### 制限
+
+- `nix run` は動かない場合が多い（ビルド後に使用）
+- 約700個の Casks はハッシュ指定が必要
+- 複数世代で大量のディスク容量を消費
+
+### 使用方法
+
+#### 基本的な使用
+
+`modules/brew-casks.nix` に Casks を追加:
+
+```nix
+home.packages = with pkgs; [
+  brewCasks."visual-studio-code"
+  brewCasks."arc"
+  brewCasks."firefox@developer-edition"  # 特殊文字は引用符で囲む
+];
+```
+
+#### ハッシュが必要な場合（約700個）
+
+```nix
+home.packages = with pkgs; [
+  (brewCasks.my-app.overrideAttrs (oldAttrs: {
+    src = pkgs.fetchurl {
+      url = builtins.head oldAttrs.src.urls;
+      hash = lib.fakeHash;  # 最初は fakeHash
+    };
+  }))
+];
+```
+
+最初のビルドでエラーが出たら、ハッシュをコピーして `fakeHash` を置き換えます。
+
+#### 特定の macOS バージョン向け
+
+```nix
+(pkgs.brewCasks.acrobat-reader.override { variation = "sequoia"; })
+```
+
+### 設定の適用
+
+```bash
+# 設定を適用
+home-manager switch --flake .#y-tsuruoka
+```
+
+### メンテナンス
+
+ディスク容量を消費するため、定期的にクリーンアップ:
+
+```bash
+nix-collect-garbage -d
+```
+
+詳細: [brew-nix GitHub](https://github.com/BatteredBunny/brew-nix)
 
 ## 参考リンク
 

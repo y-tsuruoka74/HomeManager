@@ -49,16 +49,22 @@ cat ~/.local/state/home-manager/home-manager.log
 │   ├── packages.nix     # パッケージ管理
 │   ├── zsh.nix          # zsh 設定
 │   ├── git.nix          # Git 設定
-│   └── neovim.nix       # Neovim 設定
+│   ├── neovim.nix       # Neovim 設定
+│   └── brew-casks.nix   # Homebrew Casks (brew-nix)
 ├── dotfiles/            # 生の dotfiles
 │   ├── zsh/
 │   │   ├── extra.zsh
 │   │   └── prompt.zsh
 │   ├── git/
 │   │   └── gitconfig
-│   └── nvim/
-│       ├── init.lua
-│       └── lua/
+│   ├── nvim/
+│   │   ├── init.lua
+│   │   └── lua/
+│   ├── nix/
+│   │   ├── devshell.nix
+│   │   └── VERSION_MANAGEMENT.md
+│   └── homebrew/
+│       └── Brewfile
 ├── AGENTS.md            # このファイル
 └── README.md            # プロジェクト説明
 ```
@@ -144,6 +150,39 @@ home.file.".zshrc".text = ''
 1. Home Manager モジュールが存在 → `programs.*` を使用
 2. Nix 化が容易 → `home.file."..."` で直接記述
 3. 複雑な設定や既存のファイル → `home.file."..."` で外部ファイルを参照
+
+## Homebrew Casks の管理
+
+GUI アプリケーション（Homebrew Casks）は **brew-nix** を使って Nix で管理できます。
+
+**flake.nix に既に設定**:
+- `brew-nix` および `brew-api` inputs は追加済み
+- overlay は適用済み
+
+**Casks を追加する手順:**
+
+1. `modules/brew-casks.nix` に Casks を追加:
+
+```nix
+home.packages = with pkgs; [
+  brewCasks."visual-studio-code"
+  brewCasks."arc"
+  brewCasks."firefox@developer-edition"  # 特殊文字は引用符で囲む
+];
+```
+
+2. 設定を適用:
+
+```bash
+home-manager switch --flake .#y-tsuruoka
+```
+
+**注意点:**
+- 約700個の Casks はハッシュ指定が必要 → `fakeHash` でハッシュを取得
+- `nix run` は動かない場合が多い
+- ディスク容量を消費するため、定期的に `nix-collect-garbage -d`
+
+詳細: https://github.com/BatteredBunny/brew-nix
 
 ## モジュールの追加手順
 
