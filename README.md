@@ -55,6 +55,9 @@ nix run home-manager/master -- init --switch
 ```bash
 # 設定を適用
 home-manager switch --flake .#y-tsuruoka
+
+# home-manager コマンドが見つからない場合
+nix run github:nix-community/home-manager -- switch --flake .#y-tsuruoka
 ```
 
 ### 2. 設定の更新
@@ -309,6 +312,9 @@ home.packages = with pkgs; [
 ```bash
 # 設定を適用
 home-manager switch --flake .#y-tsuruoka
+
+# home-manager コマンドが見つからない場合
+nix run github:nix-community/home-manager -- switch --flake .#y-tsuruoka
 ```
 
 ### メンテナンス
