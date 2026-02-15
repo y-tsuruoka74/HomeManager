@@ -17,8 +17,8 @@ Home Manager を用いて dotfiles を管理するリポジトリです。
 │   ├── packages.nix     # パッケージ管理
 │   ├── zsh.nix          # zsh 設定
 │   ├── git.nix          # Git 設定
-│   ├── neovim.nix       # Neovim 設定
-│   └── wezterm.nix      # wezterm 設定
+│   ├── neovim.nix       # Neovim プログラム設定
+│   └── dotfiles.nix     # プラットフォーム ash (dotfiles 管理)
 ├── dotfiles/            # 生の dotfiles
 │   ├── zsh/
 │   │   ├── extra.zsh    # 追加の zsh 設定
