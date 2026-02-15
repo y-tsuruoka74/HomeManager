@@ -43,13 +43,6 @@
 
     # TUI / ターミナルツール
     crush       # 人気ツール収集・発見
-    borders     # macOS ウィンドウ枠可視化
     kdash       # Kubernetes TUI 管理ツール
-
-    # GitHub 拡張
-    gwq         # GitHub CLI 拡張（ワークフロー改善）
-
-    # データベース
-    mysql       # MySQL クライアント
   ];
 }
