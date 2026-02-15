@@ -49,7 +49,8 @@ cat ~/.local/state/home-manager/home-manager.log
 │   ├── packages.nix     # パッケージ管理
 │   ├── zsh.nix          # zsh 設定
 │   ├── git.nix          # Git 設定
-│   └── neovim.nix       # Neovim 設定
+│   ├── neovim.nix       # Neovim 設定
+│   └── files.nix        # ファイル管理（home.file.*）
 ├── dotfiles/            # 生の dotfiles
 │   ├── zsh/
 │   │   ├── extra.zsh

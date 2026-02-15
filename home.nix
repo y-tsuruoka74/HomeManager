@@ -16,6 +16,6 @@
     ./modules/zsh.nix
     ./modules/git.nix
     ./modules/neovim.nix
-    ./modules/dotfiles.nix
+    ./modules/files.nix
   ];
 }
