@@ -17,7 +17,8 @@ Home Manager を用いて dotfiles を管理するリポジトリです。
 │   ├── packages.nix     # パッケージ管理
 │   ├── zsh.nix          # zsh 設定
 │   ├── git.nix          # Git 設定
-│   └── neovim.nix       # Neovim 設定
+│   ├── neovim.nix       # Neovim 設定
+│   └── wezterm.nix      # wezterm 設定
 ├── dotfiles/            # 生の dotfiles
 │   ├── zsh/
 │   │   ├── extra.zsh    # 追加の zsh 設定
@@ -27,6 +28,8 @@ Home Manager を用いて dotfiles を管理するリポジトリです。
 │   ├── nvim/
 │   │   ├── init.lua     # Neovim メイン設定
 │   │   └── lua/         # Lua モジュール
+│   ├── wezterm/
+│   │   └── wezterm.lua  # wezterm 設定
 │   ├── nix/
 │   │   ├── devshell.nix    # Nix devshell テンプレート
 │   │   └── VERSION_MANAGEMENT.md  # バージョン管理ドキュメント

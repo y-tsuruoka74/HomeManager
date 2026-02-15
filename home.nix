@@ -21,5 +21,6 @@
     ./modules/zsh.nix
     ./modules/git.nix
     ./modules/neovim.nix
+    ./modules/wezterm.nix
   ];
 }
