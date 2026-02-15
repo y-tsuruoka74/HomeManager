@@ -3,11 +3,12 @@
 {
   programs.git = {
     enable = true;
-    userName = ""; # TODO: 自分のユーザー名を設定
-    userEmail = ""; # TODO: 自分のメールアドレスを設定
+    userName = "Yuki Tsuruoka";
+    userEmail = "y-tsuruoka@sakura.ad.jp";
     extraConfig = {
       init.defaultBranch = "main";
       core.editor = "nvim";
+      ghq.root = "~/Github";
     };
   };
 
