@@ -36,5 +36,9 @@
     findutils
     gnugrep
     gnutar
+
+    # HTTP ツール
+    xh          # HTTP クライアント
+    hey         # HTTP ベンチマークツール
   ];
 }
