@@ -10,11 +10,6 @@
   # introduces backwards incompatible changes.
   home.stateVersion = "25.05";
 
-  # 基本ファイル配置
-  home.file.".zshrc".text = ''
-    # Home Manager によって管理されるシェル設定（最低限）
-  '';
-
   # モジュール設定の読み込み
   imports = [
     ./modules/packages.nix

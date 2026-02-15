@@ -13,7 +13,4 @@
       ghq.root = "~/Github";
     };
   };
-
-  # dotfiles/git/gitconfig を配置
-  home.file.".gitconfig".source = ./../dotfiles/git/gitconfig;
 }
