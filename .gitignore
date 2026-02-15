@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Nix build results
+result
+result-*
+
+# Vim / Neovim
+*.swp
+*.swo
+*~
+*.un~
+
+# Environment
+.env
+.envrc
+
+# direnv
+.direnv
+
+# Editor directories
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
