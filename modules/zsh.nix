@@ -36,11 +36,10 @@
   programs.starship = {
     enable = true;
     settings = {
-      add_newline = false;
+      add_newline = true ;
       format = "$directory$git_branch$git_commit$git_state$git_status$nix_shell$cmd_duration$jobs$line_break$character";
       directory = {
         truncate_to_repo = false;
-        truncate_to_repo_no_truncate_to_parent = false;
         fish_style_pwd_dir_length = 1;
       };
       character = {
