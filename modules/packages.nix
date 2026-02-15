@@ -4,7 +4,6 @@
   home.packages = with pkgs; [
     # 基本的なツール
     git
-    neovim
     htop
     jq
     bat
