@@ -13,7 +13,7 @@
       plugins = [ "git" ];
       theme = "robbyrussell";
     };
-    initExtra = ''
+    initContent = ''
       eval "$(zoxide init zsh)"
 
       # mise バージョン管理（Nix devshell で代替可能）

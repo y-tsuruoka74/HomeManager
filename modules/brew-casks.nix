@@ -11,8 +11,13 @@
     # エディタ
     brewCasks.visual-studio-code
 
-    # ブラウザ
-    brewCasks.google-chrome
+    # ブラウザ（ハッシュ指定が必要）
+    (brewCasks.google-chrome.overrideAttrs (oldAttrs: {
+      src = pkgs.fetchurl {
+        url = builtins.head oldAttrs.src.urls;
+        hash = "sha256-+B22PmRdySDsBuTxzd5fry4+w/vWa7r7+97pM1K6zKA=";
+      };
+    }))
 
     # 以下は移行フェーズ 2〜3 で追加予定
     # パスワード管理: brewCasks."1password"

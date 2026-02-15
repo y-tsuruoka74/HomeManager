@@ -3,9 +3,11 @@
 {
   programs.git = {
     enable = true;
-    userName = "Yuki Tsuruoka";
-    userEmail = "y-tsuruoka@sakura.ad.jp";
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Yuki Tsuruoka";
+        email = "y-tsuruoka@sakura.ad.jp";
+      };
       init.defaultBranch = "main";
       core.editor = "nvim";
       ghq.root = "~/Github";
