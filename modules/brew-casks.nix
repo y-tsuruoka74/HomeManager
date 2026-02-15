@@ -6,18 +6,21 @@
   # 注意: nix run は動かない場合が多い、ビルド後に使用してください
 
   home.packages = with pkgs; [
-    # 以下は例。必要な Casks を追加してください
+    # 【移行フェーズ 1】重要なアプリを徐々に追加
 
-    # 開発ツール
-    # brewCasks."visual-studio-code"
-    # brewCasks."cursor"
+    # エディタ
+    brewCasks.visual-studio-code
 
     # ブラウザ
-    # brewCasks."arc"
-    # brewCasks."firefox@developer-edition"
+    brewCasks.google-chrome
 
-    # その他
-    # brewCasks."raycast"
+    # 以下は移行フェーズ 2〜3 で追加予定
+    # パスワード管理: brewCasks."1password"
+    # ノート: brewCasks.obsidian
+    # 開発ツール: brewCasks.bruno
+    # 開発者ツール: brewCasks.devtoys
+    # ターミナル: brewCasks.wezterm
+    # フォント: brewCasks.font-hackgen, brewCasks.font-hackgen-nerd
   ];
 
   # 注意点:
@@ -30,9 +33,11 @@
   #    (brewCasks.my-app.overrideAttrs (oldAttrs: {
   #      src = pkgs.fetchurl {
   #        url = builtins.head oldAttrs.src.urls;
-  #        hash = lib.fakeHash;
+  #        hash = lib.fakeHash;  # 最初は fakeHash
   #      };
   #    }))
+  #
+  #    次にビルドした後にエラーメッセージに表示される実際のハッシュを fakeHash に置き換える
   #
   # 3. 特定の macOS バージョン向けのバージョンを指定する場合:
   #
