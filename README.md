@@ -11,9 +11,23 @@ Home Manager を用いて dotfiles を管理するリポジトリです。
 
 ```
 .
-├── flake.nix     # Nix Flake 設定
-├── home.nix      # Home Manager 設定
-└── README.md     # このファイル
+├── flake.nix            # Nix Flake 設定
+├── home.nix             # Home Manager メイン設定
+├── modules/             # Home Manager モジュール
+│   ├── packages.nix     # パッケージ管理
+│   ├── zsh.nix          # zsh 設定
+│   ├── git.nix          # Git 設定
+│   └── neovim.nix       # Neovim 設定
+├── dotfiles/            # 生の dotfiles
+│   ├── zsh/
+│   │   ├── extra.zsh    # 追加の zsh 設定
+│   │   └── prompt.zsh   # プロンプト設定
+│   ├── git/
+│   │   └── gitconfig    # Git 設定ファイル
+│   └── nvim/
+│       ├── init.lua     # Neovim メイン設定
+│       └── lua/         # Lua モジュール
+└── README.md            # このファイル
 ```
 
 ## 初期セットアップ
@@ -34,10 +48,7 @@ nix run home-manager/master -- init --switch
 
 ```bash
 # 設定を適用
-home-manager switch
-
-# Flake を使用して適用
-home-manager switch --flake .#$(whoami)
+home-manager switch --flake .#y-tsuruoka
 ```
 
 ### 2. 設定の更新
@@ -47,39 +58,49 @@ home-manager switch --flake .#$(whoami)
 nix flake update
 
 # 設定を再適用
-home-manager switch --flake .#$(whoami)
+home-manager switch --flake .#y-tsuruoka
 ```
 
-### 3. dotfiles の追加
+### 3. モジュールと dotfiles の管理
 
-以下の方法で dotfiles を管理できます:
+このリポジトリではモジュール化と生の dotfiles を組み合わせて管理しています。
 
-#### 方法 A: `home.file` で直接記述
+#### アプリ別モジュールの追加
+
+1. `modules/` に新しい `<app>.nix` ファイルを作成
+2. `home.nix` の `imports` に追加
 
 ```nix
-home.file.".config/example/config.yml".text = ''
-  setting1 = value
-  setting2 = value
-'';
+# home.nix
+imports = [
+  ./modules/packages.nix
+  ./modules/zsh.nix
+  ./modules/git.nix
+  ./modules/neovim.nix
+  ./modules/<app>.nix  # 追加
+];
 ```
 
-#### 方法 B: 外部ファイルをシンボリックリンク
+#### 生の dotfiles の追加
+
+`dotfiles/` に設定ファイルを配置し、モジュールから参照:
 
 ```nix
-home.file.".config/example/config.yml".source = ./config/example/config.yml;
+# modules/<app>.nix
+home.file.".config/<app>/config.yml".source = ./../dotfiles/app/config.yml;
+# またはディレクトリ全体
+home.file.".config/<app>".source = ./../dotfiles/app;
 ```
 
-#### 方法 C: プログラム設定を使用
+#### 設定方法の選択
 
-```nix
-programs.git = {
-  enable = true;
-  userName = "Your Name";
-  userEmail = "your@email.com";
-};
-```
+- **Home Manager モジュールが提供されるもの** → `programs.*` を使用（例: `programs.git`）
+- **Nix 化が容易な設定** → `home.file."..."` で直接記述
+- **複雑な設定や既存のファイル** → `home.file."..."` で外部ファイルを参照
 
 ### 4. パッケージの追加
+
+`modules/packages.nix` の `home.packages` に追加:
 
 ```nix
 home.packages = with pkgs; [
@@ -98,7 +119,7 @@ home.packages = with pkgs; [
 現在の設定から変更される内容を確認:
 
 ```bash
-home-manager switch --flake .#$(whoami) --dry-run
+home-manager switch --flake .#y-tsuruoka --dry-run
 ```
 
 ### ログの確認
@@ -118,14 +139,13 @@ cat ~/.local/state/home-manager/home-manager.log
 - Intel Mac: `x86_64-darwin`
 - Linux (x86-64): `x86_64-linux`
 
-### Git 追跡前に Flake を初期化
+### ユーザー名の設定
 
-flake.nix を作成したら、先に Git に追加してください:
+`home.nix` と `flake.nix` でユーザー名が一致しているか確認:
 
 ```bash
-git add flake.nix home.nix
-git commit -m "Initial Home Manager configuration"
-nix flake update
+# 現在のユーザー名を確認
+whoami
 ```
 
 ## 参考リンク
