@@ -40,9 +40,5 @@
     # HTTP ツール
     xh          # HTTP クライアント
     hey         # HTTP ベンチマークツール
-
-    # TUI / ターミナルツール
-    crush       # 人気ツール収集・発見
-    kdash       # Kubernetes TUI 管理ツール
   ];
 }

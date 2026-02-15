@@ -13,10 +13,7 @@
   outputs = inputs@{ self, nixpkgs, home-manager, ... }:
     let
       system = "aarch64-darwin"; # macOS Silicon の場合は "aarch64-darwin", Intel Mac の場合は "x86_64-darwin", Linux の場合は "x86_64-linux"
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
+      pkgs = nixpkgs.legacyPackages.${system};
     in {
       homeConfigurations."y-tsuruoka" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
