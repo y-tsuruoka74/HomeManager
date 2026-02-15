@@ -20,21 +20,16 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, brew-nix, brew-api, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, brew-nix, brew-api, ... }:
     let
       system = "aarch64-darwin"; # macOS Silicon の場合は "aarch64-darwin", Intel Mac の場合は "x86_64-darwin", Linux の場合は "x86_64-linux"
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [ brew-nix.overlays.default ];
-      };
+      pkgs = nixpkgs.legacyPackages.${system}.extend brew-nix.overlays.default;
     in {
       homeConfigurations."y-tsuruoka" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
+        extraSpecialArgs = { inherit inputs brew-nix; };
         modules = [
           ./home.nix
-          {
-            _module.args = { inherit brew-nix; };
-          }
         ];
       };
     };
