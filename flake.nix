@@ -27,7 +27,7 @@
     in {
       homeConfigurations."y-tsuruoka" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = { inherit inputs brew-nix; };
+        extraSpecialArgs = { inherit self inputs brew-nix; };
         modules = [
           ./home.nix
         ];
