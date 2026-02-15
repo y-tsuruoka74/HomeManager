@@ -2,8 +2,8 @@
 
 {
   # Home Manager needs a bit of information about you and the paths it should manage.
-  home.username = "$(whoami)";
-  home.homeDirectory = "/Users/$(whoami)";
+  home.username = "y-tsuruoka";
+  home.homeDirectory = "/Users/y-tsuruoka";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -12,11 +12,23 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = [
-    # ここにインストールしたいパッケージを追加
-    pkgs.git
-    pkgs.neovim
-    pkgs.htop
+  home.packages = with pkgs; [
+    # 基本的なツール
+    git
+    neovim
+    htop
+
+    # 開発ツール
+    fzf
+    ripgrep
+    jq
+    bat
+    eza # ls の代替
+    zoxide # cd の代替
+
+    # システムユーティリティ
+    coreutils
+    findutils
   ];
 
   # Home Manager はデフォルトで ~/.config/profile を作成しない
@@ -34,8 +46,8 @@
   # Git 設定の例
   programs.git = {
     enable = true;
-    userName = "Your Name";
-    userEmail = "your-email@example.com";
+    userName = ""; # TODO: 自分のユーザー名を設定
+    userEmail = ""; # TODO: 自分のメールアドレスを設定
     extraConfig = {
       init.defaultBranch = "main";
       core.editor = "nvim";
@@ -54,13 +66,51 @@
       plugins = [ "git" ];
       theme = "robbyrussell";
     };
+    # zoxide と Starship の初期化
+    initExtra = ''
+      eval "$(zoxide init zsh)"
+    '';
+  };
+
+  # zoxide の設定
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
   };
 
   # Starship プロンプトの設定
-  # programs.starship = {
-  #   enable = true;
-  #   settings = {
-  #     add_newline = false;
-  #   };
-  # };
+  programs.starship = {
+    enable = true;
+    settings = {
+      add_newline = false;
+      format = "$direnv$nix_shell$git_branch$git_commit$git_state$git_status$cmd_duration$jobs$line_break$character";
+      character = {
+        success_symbol = "[>](bold green)";
+        error_symbol = "[×](bold red)";
+      };
+      git_branch = {
+        symbol = "";
+        format = "[$symbol$branch]($style) ";
+      };
+      git_status = {
+        style = "bold yellow";
+      };
+      nix_shell = {
+        format = "[$symbol]($style) ";
+        symbol = "";
+      };
+      cmd_duration = {
+        min_time = 1000;
+        format = "took [$duration]($style) ";
+      };
+    };
+  };
+
+  # Neovim の設定
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+  };
 }

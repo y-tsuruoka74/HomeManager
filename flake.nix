@@ -15,7 +15,7 @@
       system = "aarch64-darwin"; # macOS Silicon の場合は "aarch64-darwin", Intel Mac の場合は "x86_64-darwin", Linux の場合は "x86_64-linux"
       pkgs = nixpkgs.legacyPackages.${system};
     in {
-      homeConfigurations."$(whoami)" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations."y-tsuruoka" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home.nix ];
       };
