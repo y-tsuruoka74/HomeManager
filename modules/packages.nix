@@ -6,17 +6,34 @@
     git
     neovim
     htop
-
-    # 開発ツール
-    fzf
-    ripgrep
     jq
     bat
-    eza # ls の代替
-    zoxide # cd の代替
+    curl
+    wget
+
+    # 開発ツール
+    fzf          # 対話的フィルタリングツール
+    ripgrep      # 高速ファイル検索
+    eza          # ls の代替
+    zoxide       # cd の代替（スマートなディレクトリ移動）
+
+    # Git 関連
+    ghq          # リポジトリ管理
+    lazygit      # Git ターミナル UI
+    lazydocker   # Docker ターミナル UI
+
+    # その他 CLI ツール
+    lsd          # ls の代替（アイコン付き）
+    peco         # 対話的フィルタリングツール
+    zellij       # ターミナルセッションマネージャ
+    tree-sitter  # パーサージェネレーター
+    mise         # バージョン管理（anyenv の代替）
+    tectonic     # Modern LaTeX
 
     # システムユーティリティ
     coreutils
     findutils
+    gnugrep
+    gnutar
   ];
 }

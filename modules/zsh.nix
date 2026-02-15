@@ -15,6 +15,7 @@
     };
     initExtra = ''
       eval "$(zoxide init zsh)"
+      eval "$(mise activate zsh)"
 
       # dotfiles/zsh の設定を読み込み
       source ${./../dotfiles/zsh/prompt.zsh}

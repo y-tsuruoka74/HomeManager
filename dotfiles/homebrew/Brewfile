@@ -1,0 +1,28 @@
+# Homebrew Brewfile
+# Home Manager で管理できない、または管理し辛いパッケージのみ
+
+# macOS 固有の GUI ツール
+brew "borders"
+
+# AI / ML 関連（Home Manager でも可能だが Homebrew 推奨）
+brew "ollama"
+
+# 依存関係が複雑なツール（Home Manager に移行すると依存関係が問題になる場合）
+# brew "fluent-bit"
+
+# ローカルでのみ使用する独自ツール
+# brew "crush"
+
+# 日本語関連ツール
+# brew "miz"  # もしある場合
+
+# GUI アプリ（Cask）
+# brew "wezterm", cask: true
+# brew "visual-studio-code", cask: true
+# brew "raycast", cask: true
+
+# ※ 依存関係がごちゃごちゃしているパッケージは残す
+# ca-certificates, gettext, libxxx, pcre2 などは自動的に管理される
+
+# Nixpkgs にない、または版数が古いパッケージのみここに追加
+# Nixpkgs にあるパッケージは Home Manager で管理することを推奨

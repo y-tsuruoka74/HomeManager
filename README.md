@@ -148,6 +148,71 @@ cat ~/.local/state/home-manager/home-manager.log
 whoami
 ```
 
+## Homebrew からの移行
+
+Home Manager は Homebrew と異なり、**ユーザー環境のみ**を管理します。以下の使い分けを推奨:
+
+**Home Manager で管理:**
+- CLI ツール（fzf, ripgrep, ghq, lazygit など）
+- 開発ツール（Neovim, mise など）
+- シェル設定（zsh, Starship など）
+
+**Homebrew に残す:**
+- GUI アプリ
+- macOS 固有のシステムツール
+- 依存関係が複雑なツール
+
+### Homebrew パッケージの移行
+
+現在 Homebrew でインストールされているパッケージを確認:
+
+```bash
+brew list --formula
+brew list --cask
+```
+
+### 移行手順例
+
+Homebrew → Home Manager へ移行する例:
+
+```bash
+# Homebrew で管理されていたパッケージを削除
+brew uninstall fzf ripgrep neovim ghq lazygit
+
+# Home Manager 設定を適用
+home-manager switch --flake .#y-tsuruoka
+```
+
+### 移行したパッケージ一例
+
+この設定では以下の Homebrew パッケージを Home Manager に移行済み:
+
+| Homebrew | Home Manager |
+|----------|--------------|
+| fzf      | fzf          |
+| ripgrep  | ripgrep      |
+| neovim   | neovim       |
+| ghq      | ghq          |
+| lazygit  | lazygit      |
+| lazydocker | lazydocker |
+| lsd      | eza          |
+| zellij   | zellij       |
+| mise     | mise         |
+
+### anyenv/asdf → mise への移行
+
+**mise** は anyenv/asdf の後継ツールで、より高速でシンプルです:
+
+```bash
+# 昔の anyenv/asdf の設定例（dotfiles/zsh/extra.zsh から削除）
+# export PATH="$HOME/.anyenv/bin:$PATH"
+# eval "$(anyenv init - zsh)"
+
+# mise の使用方法
+mise install node@lts
+mise use -g node@lts
+```
+
 ## 参考リンク
 
 - [Home Manager Manual](https://nix-community.github.io/home-manager/)

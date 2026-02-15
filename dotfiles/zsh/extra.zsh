@@ -3,7 +3,6 @@
 # エイリアス
 alias ll='eza -la'
 alias ls='eza'
-alias ll='eza -la'
 alias la='eza -a'
 alias lt='eza --tree'
 alias cat='bat'
@@ -13,13 +12,16 @@ alias grep='rg'
 export EDITOR='nvim'
 export LANG='ja_JP.UTF-8'
 
-# anyenv
-if [ -d "$HOME/.anyenv" ]; then
-  export PATH="$HOME/.anyenv/bin:$PATH"
-  eval "$(anyenv init - zsh)"
-fi
-
-# asdf
-if [ -d "$HOME/.asdf" ]; then
-  . "$HOME/.asdf/asdf.sh"
-fi
+# mise (バージョン管理 - anyenv の代替)
+# mise コマンドは Home Manager によってインストール・初期化されます
+# 言語のインストール:
+#   mise install node@lts
+#   mise install python@3.12
+#   mise install go@latest
+#
+# グローバルに設定:
+#   mise use -g node@lts
+#   mise use -g python@3.12
+#
+# その他の anyenv/asdf 設定は mise に移行可能です
+# 詳細: https://mise.jdx.dev
