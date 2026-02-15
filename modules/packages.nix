@@ -27,7 +27,7 @@
     peco         # 対話的フィルタリングツール
     zellij       # ターミナルセッションマネージャ
     tree-sitter  # パーサージェネレーター
-    mise         # バージョン管理（anyenv の代替）
+    # mise         # バージョン管理（Nix devshell で代替可能: dotfiles/nix/VERSION_MANAGEMENT.md 参照）
     tectonic     # Modern LaTeX
 
     # システムユーティリティ

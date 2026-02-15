@@ -15,7 +15,10 @@
     };
     initExtra = ''
       eval "$(zoxide init zsh)"
-      eval "$(mise activate zsh)"
+
+      # mise バージョン管理（Nix devshell で代替可能）
+      # 必要な場合は modules/packages.nix で mise を有効化し、以下のコメントを外してください:
+      # eval "$(mise activate zsh)"
 
       # dotfiles/zsh の設定を読み込み
       source ${./../dotfiles/zsh/prompt.zsh}

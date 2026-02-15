@@ -12,16 +12,21 @@ alias grep='rg'
 export EDITOR='nvim'
 export LANG='ja_JP.UTF-8'
 
-# mise (バージョン管理 - anyenv の代替)
-# mise コマンドは Home Manager によってインストール・初期化されます
-# 言語のインストール:
+# バージョン管理（mise または Nix devshell）
+#
+# 方案 A: mise を使う（既存の anyenv/asdf ワークフローに近い）
+# - modules/packages.nix の mise を有効化
+# - modules/zsh.nix の mise 初期化コメントを外す
+# - 使い方:
 #   mise install node@lts
-#   mise install python@3.12
-#   mise install go@latest
-#
-# グローバルに設定:
 #   mise use -g node@lts
-#   mise use -g python@3.12
 #
-# その他の anyenv/asdf 設定は mise に移行可能です
-# 詳細: https://mise.jdx.dev
+# 方案 B: Nix devshell を使う（Nix ネイティブ、再現性高い）
+# - 詳細: dotfiles/nix/VERSION_MANAGEMENT.md 参照
+# - プロジェクトの flake.nix で開発環境を定義
+# - 使い方:
+#   cd ~/my-project
+#   nix develop
+#   # または .envrc に "use flake" を追加して direnv を使用
+#
+# ※ 両方のアプローチを共存させることも可能

@@ -197,20 +197,54 @@ home-manager switch --flake .#y-tsuruoka
 | lazydocker | lazydocker |
 | lsd      | eza          |
 | zellij   | zellij       |
-| mise     | mise         |
+| mise     | mise （Nix devshell でも代用可） |
 
-### anyenv/asdf → mise への移行
+## バージョン管理
 
-**mise** は anyenv/asdf の後継ツールで、より高速でシンプルです:
+**mise** と **Nix devshell** のどちらを使うか選択できます。
+
+### mise を使う（既存の anyenv/asdf ワークフロー）
 
 ```bash
-# 昔の anyenv/asdf の設定例（dotfiles/zsh/extra.zsh から削除）
-# export PATH="$HOME/.anyenv/bin:$PATH"
-# eval "$(anyenv init - zsh)"
+# modules/packages.nix でmiseのコメントを外す
+# modules/zsh.nix でmise初期化のコメントを外す
 
-# mise の使用方法
+# 言語のインストール
 mise install node@lts
 mise use -g node@lts
+```
+
+**メリット:**
+- 既存のワークフローに近い
+- グローバルバージョン管理が簡単
+
+### Nix devshell を使う（Nix ネイティブ）
+
+`dotfiles/nix/VERSION_MANAGEMENT.md` に詳細があります。
+
+```bash
+# プロジェクトの flake.nix で開発環境を定義
+cd ~/my-project
+nix develop
+
+# または direnv と組み合わせる（.envrc: "use flake"）
+```
+
+**メリット:**
+- 完全に宣言的で再現性が高い
+- プロジェクト環境の分離が確実
+
+**推奨:**
+- 新規ユーザー: mise から開始
+- Nix に慣れている: Nix devshell で一元管理
+- 混合: 既存プロジェクトは mise、新しいプロジェクトは Nix devshell
+
+### anyenv/asdf → mise → Nix devshell への移行
+
+```bash
+# 昔の anyenv/asdf の設定例（dotfiles/zsh/extra.zsh から削除済み）
+# export PATH="$HOME/.anyenv/bin:$PATH"
+# eval "$(anyenv init - zsh)"
 ```
 
 ## 参考リンク
