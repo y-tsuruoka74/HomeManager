@@ -15,6 +15,8 @@
     ripgrep      # 高速ファイル検索
     eza          # ls の代替
     zoxide       # cd の代替（スマートなディレクトリ移動）
+    nodejs
+    uv
 
     # Git 関連
     ghq          # リポジトリ管理
