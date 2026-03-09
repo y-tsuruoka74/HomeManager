@@ -2,6 +2,9 @@
 
 {
   home.packages = with pkgs; [
+    # プログラム言語
+    go_1_25
+
     # 基本的なツール
     git
     htop
