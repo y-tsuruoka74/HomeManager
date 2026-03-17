@@ -6,12 +6,14 @@
     go_1_25
 
     # 基本的なツール
-    git
     htop
     jq
     bat
     curl
     wget
+
+    # AI ツール
+    claude-code  # Claude Code CLI
 
     # 開発ツール
     fzf          # 対話的フィルタリングツール
@@ -27,7 +29,6 @@
     lazydocker   # Docker ターミナル UI
 
     # その他 CLI ツール
-    lsd          # ls の代替（アイコン付き）
     peco         # 対話的フィルタリングツール
     zellij       # ターミナルセッションマネージャ
     tree-sitter  # パーサージェネレーター

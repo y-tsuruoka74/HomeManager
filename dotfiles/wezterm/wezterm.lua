@@ -147,8 +147,6 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
         else
              return get_last_n_chars(title, 23)
          end
-
-		return process_name
     end
 
     -- カスタムタイトルを取得

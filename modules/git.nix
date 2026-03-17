@@ -11,6 +11,15 @@
       init.defaultBranch = "main";
       core.editor = "nvim";
       ghq.root = "~/Github";
+      push.autoSetupRemote = true;
+      pull.rebase = false;
+      merge.conflictstyle = "zdiff3";
     };
+    includes = [
+      {
+        condition = "gitdir:~/work/";
+        path = "~/.gitconfig.work";
+      }
+    ];
   };
 }

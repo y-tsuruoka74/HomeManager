@@ -17,10 +17,6 @@ export LANG='ja_JP.UTF-8'
 # export NODE_AUTH_TOKEN="your_token_here"
 # export NPM_TOKEN="your_token_here"
 
-# zsh 補完を常に有効化
-autoload -Uz compinit
-compinit
-
 # direnv
 eval "$(direnv hook zsh)"
 

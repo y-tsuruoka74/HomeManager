@@ -11,11 +11,9 @@
     oh-my-zsh = {
       enable = true;
       plugins = [ "git" ];
-      theme = "robbyrussell";
+      theme = "";  # Starship がプロンプトを管理
     };
     initContent = ''
-      eval "$(zoxide init zsh)"
-
       # mise バージョン管理（Nix devshell で代替可能）
       # 必要な場合は modules/packages.nix で mise を有効化し、以下のコメントを外してください:
       # eval "$(mise activate zsh)"

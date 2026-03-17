@@ -5,10 +5,12 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = { self, nixpkgs }: {
-    devShells.${system}.default = let
+  outputs = { self, nixpkgs }:
+    let
+      system = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.${system};
-    in pkgs.mkShell {
+    in {
+    devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [
         # Node.js
         nodejs_22
