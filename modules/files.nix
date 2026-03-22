@@ -16,8 +16,16 @@
       force = true;
     };
 
-    # 追加の dotfiles はここに追加してください
-    # 例:
-    # ".config/myapp/config.yml".source = ./../dotfiles/myapp/config.yml;
+    # Hammerspoon 設定
+    ".hammerspoon/init.lua" = {
+      source = ./../dotfiles/hammerspoon/init.lua;
+      force = true;
+    };
+
+    # gwq 設定
+    ".config/gwq/config.toml" = {
+      source = ./../dotfiles/gwq/config.toml;
+      force = true;
+    };
   };
 }

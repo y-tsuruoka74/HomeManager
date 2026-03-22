@@ -34,7 +34,6 @@
       "d-kuro/tap"          # gwq
       "charmbracelet/tap"   # crush
       "sacloud/usacloud"    # usacloud
-      "manaflow-ai/cmux"    # cmux
     ];
 
     brews = [
@@ -64,7 +63,6 @@
       "wezterm"
       "zen"
       "zoom"
-      "cmux"
     ];
   };
 }
