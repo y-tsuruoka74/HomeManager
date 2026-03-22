@@ -1,22 +1,14 @@
 { config, pkgs, ... }:
 
 {
-  # zoxide と Starship の初期化
   programs.zsh = {
     enable = true;
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     history.size = 10000;
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" ];
-      theme = "";  # Starship がプロンプトを管理
-    };
     initContent = ''
-      # mise バージョン管理（Nix devshell で代替可能）
-      # 必要な場合は modules/packages.nix で mise を有効化し、以下のコメントを外してください:
-      # eval "$(mise activate zsh)"
+      eval "$(mise activate zsh)"
 
       # dotfiles/zsh の設定を読み込み
       source ${./../dotfiles/zsh/prompt.zsh}
@@ -24,10 +16,22 @@
     '';
   };
 
-  # zoxide の設定
+  # zoxide（インストール + shell 統合）
   programs.zoxide = {
     enable = true;
     enableZshIntegration = true;
+  };
+
+  # fzf（インストール + shell 統合）
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  # direnv（インストール + shell 統合 + nix-direnv）
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
   };
 
   # Starship プロンプトの設定

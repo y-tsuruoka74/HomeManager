@@ -18,14 +18,12 @@
     ollama       # ローカル LLM ランナー
 
     # 開発ツール
-    fzf          # 対話的フィルタリングツール
     ripgrep      # 高速ファイル検索
     eza          # ls の代替
-    zoxide       # cd の代替（スマートなディレクトリ移動）
     nodejs
     uv
     ansible      # 構成管理ツール
-    mise         # バージョン管理
+    mise         # バージョン管理（programs.mise で shell 統合）
 
     # Kubernetes ツール
     kdash        # Kubernetes ダッシュボード TUI
@@ -46,7 +44,6 @@
     peco         # 対話的フィルタリングツール
     zellij       # ターミナルセッションマネージャ
     tree-sitter  # パーサージェネレーター
-    direnv       # 環境変数管理
     go-task      # タスクランナー (task)
     pkgconf      # パッケージ設定ツール
     tectonic     # Modern LaTeX

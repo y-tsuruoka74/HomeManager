@@ -1,8 +1,0 @@
-# Homebrew Brewfile
-# nixpkgs 未対応のパッケージのみ管理
-
-brew "borders"    # macOS ウィンドウボーダー (felixkratz/formulae)
-brew "gwq"        # リポジトリ管理 (d-kuro/tap)
-brew "usacloud"   # さくらクラウド CLI (sacloud/usacloud)
-brew "crush"      # (charmbracelet/tap)
-brew "fluent-bit" # aarch64-darwin ビルドが壊れているため Homebrew で管理
