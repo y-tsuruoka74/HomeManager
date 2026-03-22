@@ -11,9 +11,11 @@
     bat
     curl
     wget
+    tree
 
     # AI ツール
     claude-code  # Claude Code CLI
+    ollama       # ローカル LLM ランナー
 
     # 開発ツール
     fzf          # 対話的フィルタリングツール
@@ -22,6 +24,18 @@
     zoxide       # cd の代替（スマートなディレクトリ移動）
     nodejs
     uv
+    ansible      # 構成管理ツール
+    mise         # バージョン管理
+
+    # Kubernetes ツール
+    kdash        # Kubernetes ダッシュボード TUI
+
+    # データベース
+    mariadb-connector-c  # MySQL/MariaDB クライアントライブラリ
+    mysql80              # MySQL 8.0 クライアント
+
+    # Lua
+    luarocks     # Lua パッケージマネージャ
 
     # Git 関連
     ghq          # リポジトリ管理
@@ -34,7 +48,7 @@
     tree-sitter  # パーサージェネレーター
     direnv       # 環境変数管理
     go-task      # タスクランナー (task)
-    # mise         # バージョン管理（Nix devshell で代替可能: dotfiles/nix/VERSION_MANAGEMENT.md 参照）
+    pkgconf      # パッケージ設定ツール
     tectonic     # Modern LaTeX
 
     # システムユーティリティ
@@ -46,5 +60,12 @@
     # HTTP ツール
     xh          # HTTP クライアント
     hey         # HTTP ベンチマークツール
+
+    # 注: 以下のパッケージは Homebrew で管理:
+    #   - gwq        (d-kuro/tap) - nixpkgs 未対応
+    #   - borders    (felixkratz/formulae) - macOS ウィンドウボーダー、nixpkgs 未対応
+    #   - usacloud   (sacloud/usacloud) - さくらクラウド CLI、nixpkgs 未対応
+    #   - crush      (charmbracelet/tap) - nixpkgs 未対応
+    #   - fluent-bit - nixpkgs の aarch64-darwin ビルドが壊れているため
   ];
 }
