@@ -4,7 +4,11 @@
   # すべての home.file 設定をここで管理
   home.file = {
     # Neovim 設定
-    ".config/nvim".source = ./../dotfiles/nvim;
+    ".config/nvim" = {
+      source = ./../dotfiles/nvim;
+      recursive = true;
+      force = true;
+    };
 
     # wezterm 設定
     ".config/wezterm/wezterm.lua" = {

@@ -11,6 +11,7 @@ alias grep='rg'
 # 環境変数
 export EDITOR='nvim'
 export LANG='ja_JP.UTF-8'
+export PATH="$HOME/.local/bin:$PATH"
 
 # GitHub トークン（aipf-cpanel 用）
 # 注意: 本番環境では環境変数マネージャーを使用してください
