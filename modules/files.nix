@@ -27,5 +27,15 @@
       source = ./../dotfiles/gwq/config.toml;
       force = true;
     };
+
+    # Claude Code 設定
+    ".claude/settings.json" = {
+      source = ./../dotfiles/claude/settings.json;
+      force = true;
+    };
+    ".claude/statusline.py" = {
+      source = ./../dotfiles/claude/statusline.py;
+      force = true;
+    };
   };
 }

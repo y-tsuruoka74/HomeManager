@@ -42,6 +42,7 @@
       "usacloud"   # さくらクラウド CLI
       "crush"
       "fluent-bit" # aarch64-darwin の nixpkgs ビルドが壊れているため
+      "ccusage"    # Claude Code トークン使用量の集計
     ];
 
     casks = [
