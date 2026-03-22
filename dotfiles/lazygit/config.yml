@@ -1,0 +1,6 @@
+customCommands:
+  - key: '<c-y>'
+    context: 'files'
+    description: 'Generate commit message with Claude AI'
+    command: 'bash ~/Library/Application\ Support/lazygit/gen-commit-msg.sh'
+    output: terminal

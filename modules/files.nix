@@ -28,6 +28,22 @@
       force = true;
     };
 
+    # zellij 設定
+    ".config/zellij/config.kdl" = {
+      source = ./../dotfiles/zellij/config.kdl;
+      force = true;
+    };
+
+    # lazygit 設定
+    "Library/Application Support/lazygit/config.yml" = {
+      source = ./../dotfiles/lazygit/config.yml;
+      force = true;
+    };
+    "Library/Application Support/lazygit/gen-commit-msg.sh" = {
+      source = ./../dotfiles/lazygit/gen-commit-msg.sh;
+      force = true;
+    };
+
     # Claude Code 設定
     ".claude/settings.json" = {
       source = ./../dotfiles/claude/settings.json;
