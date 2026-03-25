@@ -34,6 +34,12 @@
       force = true;
     };
 
+    # tmux 設定
+    ".config/tmux/tmux.conf" = {
+      source = ./../dotfiles/tmux/tmux.conf;
+      force = true;
+    };
+
     # lazygit 設定
     "Library/Application Support/lazygit/config.yml" = {
       source = ./../dotfiles/lazygit/config.yml;

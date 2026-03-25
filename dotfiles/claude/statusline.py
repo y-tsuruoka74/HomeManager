@@ -23,6 +23,8 @@ YELLOW = "\033[38;2;255;200;60m"
 ORANGE = "\033[38;2;255;140;40m"
 CYAN = "\033[38;2;80;200;220m"
 GOLD = "\033[38;2;220;180;60m"
+BLUE = "\033[38;2;95;175;255m"
+PURPLE = "\033[38;2;156;122;242m"
 
 
 def gradient(pct):
@@ -248,7 +250,46 @@ if proc_total is not None and proc_total > 0:
 
 line2 = f"{DIM}│{R}".join(f" {p} " for p in parts2)
 
+# ── Line 3: git リポジトリ + ブランチ ────────────────────────────────────────
+def get_git_info():
+    """Return (repo_name, branch) for the current working directory, or (None, None)."""
+    try:
+        cwd = os.getcwd()
+        result = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"],
+            capture_output=True, text=True, timeout=2, cwd=cwd,
+        )
+        if result.returncode != 0:
+            return None, None
+        repo_root = result.stdout.strip()
+        home = os.path.expanduser("~")
+        if repo_root.startswith(home):
+            repo_name = "~" + repo_root[len(home):]
+        else:
+            repo_name = repo_root
+
+        result = subprocess.run(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            capture_output=True, text=True, timeout=2, cwd=cwd,
+        )
+        branch = result.stdout.strip() if result.returncode == 0 else None
+        return repo_name, branch
+    except Exception:
+        return None, None
+
+
+repo_name, branch = get_git_info()
+if repo_name:
+    line3 = f" {BLUE} {repo_name}{R}"
+    if branch:
+        line3 += f"  {PURPLE}{branch}{R}"
+    line3 += " "
+else:
+    line3 = None
+
 # ── Output ──────────────────────────────────────────────────────────────────
 print(line1, end="")
 if line2:
     print(f"\n{line2}", end="")
+if line3:
+    print(f"\n{line3}", end="")

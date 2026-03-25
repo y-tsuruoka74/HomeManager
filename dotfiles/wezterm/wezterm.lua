@@ -12,6 +12,7 @@ local red = "#E50000"
 local yellow = "#D7650C"
 
 -- 基本設定
+config.term = "xterm-256color"
 config.automatically_reload_config = true
 config.window_close_confirmation = "NeverPrompt"
 config.default_cursor_style = "BlinkingBar"
