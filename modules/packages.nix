@@ -14,8 +14,9 @@
     tree
 
     # AI ツール
-    claude-code  # Claude Code CLI
-    ollama       # ローカル LLM ランナー
+    claude-code         # Claude Code CLI
+    claude-code-router  # Claude Code リクエストを複数モデルにルーティング
+    ollama              # ローカル LLM ランナー
 
     # 開発ツール
     ripgrep      # 高速ファイル検索
