@@ -15,7 +15,9 @@
     ./modules/packages.nix
     ./modules/zsh.nix
     ./modules/git.nix
-    ./modules/neovim.nix
-    ./modules/files.nix
+    ./modules/editor.nix
+    ./modules/terminal.nix
+    ./modules/ai.nix
+    ./modules/apps.nix
   ];
 }
