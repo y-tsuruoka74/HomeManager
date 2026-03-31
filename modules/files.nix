@@ -1,8 +1,27 @@
-{ config, ... }:
+{ config, pkgs, lib, ... }:
 
+let
+  superpowersSrc = pkgs.fetchFromGitHub {
+    owner = "obra";
+    repo = "superpowers";
+    rev = "v5.0.6";
+    hash = "sha256-r/Z+UxSFQIx99HnSPoU/toWMddXDcnLsbFXpQfLfj1k=";
+  };
+in
 {
   # すべての home.file 設定をここで管理
   home.file = {
+    # superpowers Claude Code プラグイン
+    ".claude/plugins/superpowers" = {
+      source = superpowersSrc;
+      recursive = true;
+    };
+
+    # superpowers スキル
+    ".claude/skills" = {
+      source = "${superpowersSrc}/skills";
+      recursive = true;
+    };
     # Neovim 設定
     ".config/nvim" = {
       source = ./../dotfiles/nvim;
@@ -47,6 +66,12 @@
     };
     "Library/Application Support/lazygit/gen-commit-msg.sh" = {
       source = ./../dotfiles/lazygit/gen-commit-msg.sh;
+      force = true;
+    };
+
+    # claude-code-router 設定
+    ".claude-code-router/config.json" = {
+      source = ./../dotfiles/ccr/config.json;
       force = true;
     };
 

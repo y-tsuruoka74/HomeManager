@@ -1,0 +1,16 @@
+{
+  "PORT": 3456,
+  "Providers": [
+    {
+      "name": "AIPF_Production",
+      "api_base_url": "https://api.ai.sakura.ad.jp/v1/chat/completions",
+      "api_key": "$CUSTOM_API_KEY",
+      "models": [
+        "preview/Kimi-K2.5"
+      ]
+    }
+  ],
+  "Router": {
+    "default": "AIPF_Production,preview/Kimi-K2.5"
+  }
+}
