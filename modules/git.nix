@@ -22,4 +22,15 @@
       }
     ];
   };
+
+  home.file = {
+    "Library/Application Support/lazygit/config.yml" = {
+      source = ./../dotfiles/lazygit/config.yml;
+      force = true;
+    };
+    "Library/Application Support/lazygit/gen-commit-msg.sh" = {
+      source = ./../dotfiles/lazygit/gen-commit-msg.sh;
+      force = true;
+    };
+  };
 }
