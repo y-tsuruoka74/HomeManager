@@ -1,6 +1,25 @@
 { config, pkgs, ... }:
 
 {
+  # tmux セッションを15分ごとに自動保存する launchd エージェント
+  launchd.user.agents.tmux-resurrect-save = {
+    serviceConfig = {
+      ProgramArguments = [
+        "${pkgs.bash}/bin/bash"
+        "-c"
+        ''
+          if ${pkgs.tmux}/bin/tmux list-sessions &>/dev/null; then
+            ${pkgs.tmux}/bin/tmux run-shell "${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh"
+          fi
+        ''
+      ];
+      StartInterval = 900;
+      RunAtLoad = false;
+      StandardOutPath = "/tmp/tmux-resurrect-save.log";
+      StandardErrorPath = "/tmp/tmux-resurrect-save.log";
+    };
+  };
+
   # システムのステートバージョン
   system.stateVersion = 5;
 

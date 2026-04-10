@@ -23,9 +23,9 @@
       }
       {
         plugin = continuum;
+        # 自動保存は launchd エージェントが担当。ここでは起動時の自動復元のみ有効化
         extraConfig = ''
           set -g @continuum-restore 'on'
-          set -g @continuum-save-interval '15'
         '';
       }
     ];
