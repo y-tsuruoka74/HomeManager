@@ -60,8 +60,9 @@
       "gwq"        # リポジトリ管理
       "usacloud"   # さくらクラウド CLI
       "crush"
-      "fluent-bit" # aarch64-darwin の nixpkgs ビルドが壊れているため
-      "ccusage"    # Claude Code トークン使用量の集計
+      "fluent-bit"    # aarch64-darwin の nixpkgs ビルドが壊れているため
+      "ccusage"       # Claude Code トークン使用量の集計
+      "schemathesis"  # API テストツール（nixpkgs 未対応）
     ];
 
     casks = [
