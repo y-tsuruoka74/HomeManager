@@ -28,11 +28,11 @@
     mise         # バージョン管理（programs.mise で shell 統合）
 
     # Kubernetes ツール
-    kdash        # Kubernetes ダッシュボード TUI
+    # kdash        # ハッシュ不一致のため一時無効化（flake update 後に復活）
 
     # データベース
     mariadb-connector-c  # MySQL/MariaDB クライアントライブラリ
-    mysql80              # MySQL 8.0 クライアント
+    mysql84              # MySQL 8.4 クライアント
 
     # Lua
     luarocks     # Lua パッケージマネージャ
