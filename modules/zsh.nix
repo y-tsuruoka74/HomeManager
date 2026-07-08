@@ -8,6 +8,12 @@
     syntaxHighlighting.enable = true;
     history.size = 10000;
     initContent = ''
+      # 補完キャッシュが古い場合は再生成
+      if [[ -f ~/.zcompdump && ~/.zcompdump -ot ${config.home.profileDirectory} ]]; then
+        rm -f ~/.zcompdump
+        compinit
+      fi
+
       eval "$(mise activate zsh)"
 
       # dotfiles/zsh の設定を読み込み

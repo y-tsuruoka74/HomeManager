@@ -39,6 +39,7 @@
 
     # Git 関連
     ghq          # リポジトリ管理
+    gh           # GitHub CLI
     lazygit      # Git ターミナル UI
     lazydocker   # Docker ターミナル UI
 
