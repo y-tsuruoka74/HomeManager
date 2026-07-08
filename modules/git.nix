@@ -14,6 +14,7 @@
       push.autoSetupRemote = true;
       pull.rebase = false;
       merge.conflictstyle = "zdiff3";
+      url."git@github.com:".insteadOf = "https://github.com/";
     };
     includes = [
       {
