@@ -18,6 +18,15 @@ export PATH="$HOME/.local/bin:$PATH"
 # export NODE_AUTH_TOKEN="your_token_here"
 # export NPM_TOKEN="your_token_here"
 
+# Copilot CLI 用 GitHub トークン
+# security（署名済み標準コマンド）でキーチェーンから読み込むことで、
+# copilot 自身（Nix 製・未署名バイナリ）がキーチェーンにアクセスして
+# 都度許可を求められる問題を回避する。
+# 事前に以下を一度実行してトークンを保存しておくこと:
+#   security add-generic-password -a "$USER" -s copilot-github-token -w
+GH_TOKEN="$(security find-generic-password -a "$USER" -s copilot-github-token -w 2>/dev/null)"
+[[ -n "$GH_TOKEN" ]] && export GH_TOKEN
+
 # direnv
 eval "$(direnv hook zsh)"
 

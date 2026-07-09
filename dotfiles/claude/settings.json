@@ -31,7 +31,6 @@
       "Bash(gh auth status*)"
     ],
     "deny": [
-      "Bash(gh api *)",
       "Bash(gh pr create*)",
       "Bash(gh pr edit*)",
       "Bash(gh pr merge*)",
@@ -100,6 +99,20 @@
       "Bash(gh cache delete*)",
       "Bash(gh extension install*)",
       "Bash(gh extension remove*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(gh api*)",
+            "command": "python3 ~/.claude/hooks/gh-api-guard.py"
+          }
+        ]
+      }
     ]
   }
 }

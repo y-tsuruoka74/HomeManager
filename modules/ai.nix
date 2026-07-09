@@ -31,6 +31,10 @@ in
       source = ./../dotfiles/claude/statusline.py;
       force = true;
     };
+    ".claude/hooks/gh-api-guard.py" = {
+      source = ./../dotfiles/claude/hooks/gh-api-guard.py;
+      force = true;
+    };
 
     # claude-code-router 設定
     ".claude-code-router/config.json" = {
