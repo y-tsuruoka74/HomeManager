@@ -20,6 +20,79 @@
     };
   };
 
+  # lazygit / nvim --embed が長時間起動しっぱなしになっていないか定期チェックし、
+  # 該当があれば tmux 上の場所（session:window.pane と作業ディレクトリ）を通知する
+  launchd.user.agents.stale-process-watchdog = {
+    serviceConfig = {
+      ProgramArguments = [
+        "${pkgs.bash}/bin/bash"
+        "-c"
+        ''
+          set -uo pipefail
+
+          # "[[dd-]hh:]mm:ss" 形式の ps etime を秒数に変換
+          etime_to_seconds() {
+            local etime="$1"
+            local days=0
+            local rest="$etime"
+            if [[ "$etime" == *-* ]]; then
+              days="''${etime%%-*}"
+              rest="''${etime#*-}"
+            fi
+            local a b c
+            IFS=: read -r a b c <<< "$rest"
+            if [ -n "''${c:-}" ]; then
+              echo $(( days*86400 + 10#$a*3600 + 10#$b*60 + 10#$c ))
+            else
+              echo $(( days*86400 + 10#$a*60 + 10#''${b:-0} ))
+            fi
+          }
+
+          # tty から tmux のペイン (session:window.pane と作業ディレクトリ) を逆引き
+          pane_for_tty() {
+            local tty="/dev/$1"
+            ${pkgs.tmux}/bin/tmux list-panes -a -F "#{session_name}:#{window_index}.#{pane_index}|#{pane_tty}|#{pane_current_path}" 2>/dev/null \
+              | awk -F'|' -v t="$tty" '$2==t {print $1" - "$3; f=1} END{exit !f}'
+          }
+
+          esc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
+
+          notify() {
+            local title="$1" body="$2"
+            osascript -e "display notification \"$(esc "$body")\" with title \"$(esc "$title")\""
+          }
+
+          check_pattern() {
+            local pattern="$1" label="$2" threshold_h="$3"
+            local threshold_sec=$(( threshold_h * 3600 ))
+            local pid etime sec tty loc
+            while read -r pid; do
+              [ -z "$pid" ] && continue
+              etime=$(ps -o etime= -p "$pid" 2>/dev/null | tr -d ' ') || continue
+              [ -z "$etime" ] && continue
+              sec=$(etime_to_seconds "$etime")
+              if [ "$sec" -ge "$threshold_sec" ]; then
+                tty=$(ps -o tty= -p "$pid" 2>/dev/null | tr -d ' ')
+                if loc=$(pane_for_tty "$tty"); then
+                  notify "''${label} が長時間起動 (''${etime})" "$loc"
+                else
+                  notify "''${label} が長時間起動 (''${etime})" "tty=''${tty} (tmux外)"
+                fi
+              fi
+            done < <(pgrep -f "$pattern")
+          }
+
+          check_pattern "nvim --embed" "nvim" 6
+          check_pattern "bin/lazygit" "lazygit" 24
+        ''
+      ];
+      StartInterval = 3600;
+      RunAtLoad = false;
+      StandardOutPath = "/tmp/stale-process-watchdog.log";
+      StandardErrorPath = "/tmp/stale-process-watchdog.log";
+    };
+  };
+
   # システムのステートバージョン
   system.stateVersion = 5;
 

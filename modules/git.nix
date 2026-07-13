@@ -33,5 +33,9 @@
       source = ./../dotfiles/lazygit/gen-commit-msg.sh;
       force = true;
     };
+    "Library/Application Support/lazygit/prune-merged-branches.sh" = {
+      source = ./../dotfiles/lazygit/prune-merged-branches.sh;
+      force = true;
+    };
   };
 }

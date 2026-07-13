@@ -4,3 +4,12 @@ customCommands:
     description: 'Generate commit message with Claude AI'
     command: 'bash ~/Library/Application\ Support/lazygit/gen-commit-msg.sh'
     output: terminal
+  - key: '<c-x>'
+    context: 'localBranches'
+    description: 'リモートに存在せずマージ済みのブランチを削除'
+    command: 'bash ~/Library/Application\ Support/lazygit/prune-merged-branches.sh'
+    prompts:
+      - type: 'confirm'
+        title: 'ブランチ削除の確認'
+        body: 'デフォルトブランチにマージ済みで、リモートに存在しないローカルブランチをすべて削除します（ワークツリーに紐づく場合は、未コミットの変更がなければワークツリーごと削除します）。よろしいですか？'
+    output: terminal
