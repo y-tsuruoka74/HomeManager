@@ -61,11 +61,12 @@
     xh          # HTTP クライアント
     hey         # HTTP ベンチマークツール
 
+    # その他
+    crush              # Glamourous AI coding agent
+    usacloud            # さくらクラウド CLI
+    _1password-cli      # 1Password CLI
+
     # 注: 以下のパッケージは Homebrew で管理:
-    #   - gwq        (d-kuro/tap) - nixpkgs 未対応
-    #   - borders    (felixkratz/formulae) - macOS ウィンドウボーダー、nixpkgs 未対応
-    #   - usacloud   (sacloud/usacloud) - さくらクラウド CLI、nixpkgs 未対応
-    #   - crush      (charmbracelet/tap) - nixpkgs 未対応
     #   - fluent-bit - nixpkgs の aarch64-darwin ビルドが壊れているため
   ];
 }

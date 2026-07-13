@@ -124,19 +124,9 @@
       cleanup = "uninstall"; # 設定外のパッケージを自動削除
     };
 
-    taps = [
-      "1password/tap"       # 1password, 1password-cli
-      "felixkratz/formulae" # borders
-      "d-kuro/tap"          # gwq
-      "charmbracelet/tap"   # crush
-      "sacloud/usacloud"    # usacloud
-    ];
+    taps = [];
 
     brews = [
-      "borders"    # macOS ウィンドウボーダー
-      "gwq"        # リポジトリ管理
-      "usacloud"   # さくらクラウド CLI
-      "crush"
       "fluent-bit"    # aarch64-darwin の nixpkgs ビルドが壊れているため
       "ccusage"       # Claude Code トークン使用量の集計
       "schemathesis"  # API テストツール（nixpkgs 未対応）
@@ -144,7 +134,6 @@
 
     casks = [
       "1password"
-      "1password-cli"
       "bruno"
       "claude"
       "devtoys"
