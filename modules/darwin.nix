@@ -55,11 +55,9 @@
               | awk -F'|' -v t="$tty" '$2==t {print $1" - "$3; f=1} END{exit !f}'
           }
 
-          esc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
-
           notify() {
             local title="$1" body="$2"
-            osascript -e "display notification \"$(esc "$body")\" with title \"$(esc "$title")\""
+            /opt/homebrew/bin/terminal-notifier -title "$title" -message "$body"
           }
 
           check_pattern() {
@@ -127,9 +125,10 @@
     taps = [];
 
     brews = [
-      "fluent-bit"    # aarch64-darwin の nixpkgs ビルドが壊れているため
-      "ccusage"       # Claude Code トークン使用量の集計
-      "schemathesis"  # API テストツール（nixpkgs 未対応）
+      "fluent-bit"          # aarch64-darwin の nixpkgs ビルドが壊れているため
+      "ccusage"             # Claude Code トークン使用量の集計
+      "schemathesis"        # API テストツール（nixpkgs 未対応）
+      "terminal-notifier"   # pin されている nixpkgs 版が x86_64 のみのため
     ];
 
     casks = [
