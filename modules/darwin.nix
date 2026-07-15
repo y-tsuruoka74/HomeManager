@@ -144,14 +144,19 @@
       "docker-desktop"
       "electron"
       "electron-fiddle"
+      "elgato-stream-deck"  # Stream Deck 設定ツール
       "font-hackgen"
       "font-hackgen-nerd"
       "hammerspoon"
+      "logi-options+"       # Logicool マウス/キーボード設定ツール
       "multipass"
       "obsidian"
+      "onedrive"
       "raycast"
+      "slack"
       "visual-studio-code"
       "wezterm"
+      "zed"
       "zen"
       "zoom"
     ];
