@@ -120,6 +120,10 @@
     onActivation = {
       autoUpdate = true;
       cleanup = "uninstall"; # 設定外のパッケージを自動削除
+      # Homebrew 4.6+ は --cleanup 時に確認プロンプトを出すため、
+      # --force-cleanup を付けて darwin-rebuild switch が対話待ちで
+      # 止まらないようにする
+      extraFlags = [ "--force-cleanup" ];
     };
 
     taps = [];
@@ -134,6 +138,7 @@
     casks = [
       "1password"
       "bruno"
+      "chatgpt"     # ChatGPT デスクトップアプリ（Codex 機能を統合、codex-app の後継）
       "claude"
       "devtoys"
       "docker-desktop"

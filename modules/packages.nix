@@ -18,6 +18,7 @@
     claude-code-router  # Claude Code リクエストを複数モデルにルーティング
     ollama              # ローカル LLM ランナー
     github-copilot-cli  # GitHub Copilot CLI
+    codex               # OpenAI Codex CLI
 
     # 開発ツール
     ripgrep      # 高速ファイル検索
