@@ -7,6 +7,10 @@ alias la='eza -a'
 alias lt='eza --tree'
 alias cat='bat'
 alias grep='rg'
+alias find='fd'
+alias du='dust'
+alias top='btm'
+alias htop='btm'
 
 # 環境変数
 export EDITOR='nvim'

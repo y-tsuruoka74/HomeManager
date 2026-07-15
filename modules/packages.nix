@@ -22,7 +22,10 @@
 
     # 開発ツール
     ripgrep      # 高速ファイル検索
+    fd           # find の代替
     eza          # ls の代替
+    bottom       # htop の代替（グラフ表示付き TUI）
+    dust         # du の代替（ディスク使用量をツリー表示）
     nodejs
     uv
     ansible      # 構成管理ツール

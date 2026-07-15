@@ -6,6 +6,7 @@ local mux = wezterm.mux
 -- カラー設定
 local purple = '#9c7af2'
 local blue = '#6EADD8'
+local bright_blue = '#8ECAE6'
 local light_green = "#7dcd5d"
 local orange = "#e19500"
 local red = "#E50000"
@@ -56,7 +57,7 @@ config.colors = {
         'black', red, purple, light_green, blue, yellow, 'teal', 'silver',
     },
     brights = {
-        'grey', 'red', 'lime', 'yellow', 'blue', 'fuchsia', 'aqua', 'white',
+        'grey', 'red', 'lime', 'yellow', bright_blue, 'fuchsia', 'aqua', 'white',
     },
 }
 
