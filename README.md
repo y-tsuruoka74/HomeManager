@@ -135,14 +135,11 @@ imports = [
 
 ## バージョン管理
 
-**mise** と **Nix devshell** を使い分けられます。
+言語・ツールのバージョンは基本的に `packages.nix` で Nix 管理する（グローバルに1バージョン）。
+プロジェクト単位で異なるバージョンが必要な場合は **Nix devshell** を使う。
 
-### mise（グローバル管理）
-
-```bash
-mise install node@lts
-mise use -g node@lts
-```
+（旧: mise でグローバル管理していたが、プロジェクト単位の切り替えには実際には使っておらず
+グローバルインストーラーとしての役割しかなかったため、重複を避けて Nix に統合した）
 
 ### Nix devshell（プロジェクト単位）
 

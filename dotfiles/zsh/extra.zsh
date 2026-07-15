@@ -79,6 +79,21 @@ _git_user_profiles() {
 }
 compdef _git_user_profiles git-user
 
+# Nix で管理しているツールの現在のバージョン一覧
+# home.packages で入れた実体は /etc/profiles/per-user/$USER/bin にシンボリックリンクされ、
+# その先の /nix/store/<hash>-<name>-<version>/... から名前とバージョンを抽出して一覧表示する。
+# --version 等をツールごとに個別実装する必要がなく、実際にインストールされている
+# 内容と常に一致する（packages.nix と手動でズレることがない）。
+function tool-versions() {
+  local profile_bin="/etc/profiles/per-user/$USER/bin"
+  local f target
+  for f in "$profile_bin"/*(N); do
+    target=$(readlink -f "$f" 2>/dev/null) || continue
+    [[ "$target" == /nix/store/* ]] || continue
+    echo "$target" | sed -E 's|^/nix/store/[a-z0-9]+-([^/]+)/.*|\1|'
+  done | sort -u
+}
+
 # ghq + peco 関数
 function peco-src () {
   local selected_dir=$(ghq list -p | peco --query "$LBUFFER")

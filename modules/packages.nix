@@ -26,11 +26,22 @@
     bottom       # htop の代替（グラフ表示付き TUI）
     dust         # du の代替（ディスク使用量をツリー表示）
     nodejs
+    yarn
+    pnpm
+    python314
+    rustc
+    cargo
+    ruff         # Python linter/formatter
     uv
+    pipx         # Python アプリケーションのインストール
     ansible      # 構成管理ツール
-    mise         # バージョン管理（programs.mise で shell 統合）
+    opencode     # AI コーディングエージェント CLI
 
-    # Kubernetes ツール
+    # Kubernetes / インフラツール
+    kubernetes-helm  # helm
+    kind             # Kubernetes in Docker
+    kubectl
+    terraform
     # kdash        # ハッシュ不一致のため一時無効化（flake update 後に復活）
 
     # データベース
