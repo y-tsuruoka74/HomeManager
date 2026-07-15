@@ -45,7 +45,7 @@
     enable = true;
     settings = {
       add_newline = true ;
-      format = "$directory$git_branch$git_commit$git_state$git_status$nix_shell$cmd_duration$jobs$line_break$character";
+      format = "$directory$git_branch\${custom.git_user}$git_commit$git_state$git_status$nix_shell$cmd_duration$jobs$line_break$character";
       directory = {
         truncate_to_repo = false;
         fish_style_pwd_dir_length = 1;
@@ -60,6 +60,11 @@
       };
       git_status = {
         style = "bold yellow";
+      };
+      custom.git_user = {
+        command = "git config github.login";
+        when = "git rev-parse --is-inside-work-tree 2>/dev/null";
+        format = "[$output](dimmed white) ";
       };
       nix_shell = {
         format = "[$symbol]($style) ";

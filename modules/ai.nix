@@ -35,12 +35,5 @@ in
       source = ./../dotfiles/claude/hooks/gh-api-guard.py;
       force = true;
     };
-
-    # claude-code-router 設定
-    ".claude-code-router/config.json" = {
-      source = ./../dotfiles/ccr/config.json;
-      force = true;
-    };
-
   };
 }

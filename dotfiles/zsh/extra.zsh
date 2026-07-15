@@ -41,6 +41,44 @@ eval "$(direnv hook zsh)"
 # go-task (タスクランナー)
 eval "$(task --completion zsh)"
 
+# Git ユーザー切り替え
+# ~/.config/git/identities/<名前>.gitconfig にプロファイルを置いておくと、
+# `git-user <名前>` で ~/.gitconfig.identity (git.nix から include される
+# 無条件 include ファイル) をそのプロファイルへのシンボリックリンクに切り替える。
+# 引数無しなら現在のプロファイルと利用可能な一覧を表示する。
+function git-user() {
+  local identities_dir="$HOME/.config/git/identities"
+  local identity_file="$HOME/.gitconfig.identity"
+
+  if [ -z "$1" ]; then
+    local current=""
+    if [ -L "$identity_file" ]; then
+      current="$(basename "$(readlink "$identity_file")" .gitconfig)"
+    fi
+    echo "現在のプロファイル: ${current:-未設定}"
+    echo "利用可能なプロファイル:"
+    ls "$identities_dir" 2>/dev/null | sed 's/\.gitconfig$//' | sed 's/^/  /'
+    return 0
+  fi
+
+  local target="$identities_dir/$1.gitconfig"
+  if [ ! -f "$target" ]; then
+    echo "プロファイルが見つかりません: $1 ($target)" >&2
+    return 1
+  fi
+
+  ln -sf "$target" "$identity_file"
+  echo "git user を '$1' に切り替えました:"
+  git config --file "$target" --get-regexp '^user\.'
+}
+
+_git_user_profiles() {
+  local -a profiles
+  profiles=(${(f)"$(ls "$HOME/.config/git/identities" 2>/dev/null | sed 's/\.gitconfig$//')"})
+  _describe 'profile' profiles
+}
+compdef _git_user_profiles git-user
+
 # ghq + peco 関数
 function peco-src () {
   local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
