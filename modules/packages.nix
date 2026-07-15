@@ -40,6 +40,7 @@
 
     # Git 関連
     ghq          # リポジトリ管理
+    gwq          # Git worktree 管理（fuzzy finder 付き）
     gh           # GitHub CLI
     lazygit      # Git ターミナル UI
     lazydocker   # Docker ターミナル UI
