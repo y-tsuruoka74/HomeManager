@@ -1,5 +1,14 @@
 { config, pkgs, ... }:
 
+let
+  # ~/.codex/config.toml は Codex アプリ側でも更新されるため、ファイル全体を
+  # Home Manager で管理せず、CLI 起動時にステータスラインだけを上書きする。
+  codexWithUsage = pkgs.writeShellScriptBin "codex" ''
+    exec ${pkgs.codex}/bin/codex \
+      -c 'tui.status_line=["model-with-reasoning","current-dir","git-branch","context-remaining","five-hour-limit","weekly-limit","total-input-tokens","total-output-tokens"]' \
+      "$@"
+  '';
+in
 {
   home.packages = with pkgs; [
     # プログラム言語
@@ -17,7 +26,7 @@
     claude-code         # Claude Code CLI
     ollama              # ローカル LLM ランナー
     github-copilot-cli  # GitHub Copilot CLI
-    codex               # OpenAI Codex CLI
+    codexWithUsage      # OpenAI Codex CLI（モデル・コンテキスト・利用量を常時表示）
 
     # 開発ツール
     ripgrep      # 高速ファイル検索

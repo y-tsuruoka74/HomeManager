@@ -1,0 +1,46 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+# Keep model-generated commands confined to this repository. Requests that
+# need network access or access outside the workspace still go through review.
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+approvals_reviewer = "auto_review"
+
+[sandbox_workspace_write]
+network_access = false
+
+[auto_review]
+policy = """
+# Automatic approval policy
+
+Approve only when the requested action is clearly low-risk and all of the
+following are true:
+
+- The action is read-only, or its writes are limited to the current workspace
+  or temporary files and are straightforward to undo.
+- Any network access is read-only and limited to documentation, dependency
+  metadata/downloads, or Git remote inspection/fetching.
+- The command does not expose credentials, tokens, private keys, environment
+  secrets, or private file contents.
+
+Do not automatically approve any action that:
+
+- Uses sudo or changes operating-system, Home Manager, Nix profile, package,
+  service, security, permission, authentication, or credential state.
+- Writes outside the workspace, changes dotfiles in the home directory, or
+  accesses credential stores, SSH private keys, keychains, or secret files.
+- Deletes data or uses destructive/irreversible Git operations such as reset
+  --hard, clean, force push, history rewriting, or branch/tag deletion.
+- Pushes, publishes, deploys, releases, purchases, sends messages, creates or
+  modifies remote resources, or otherwise causes an external side effect.
+- Downloads and executes remote code in one step, bypasses a sandbox or hook,
+  weakens this policy, or broadens future permissions.
+
+If intent, scope, reversibility, or data sensitivity is uncertain, require the
+user to review the request.
+"""
+
+# Connector/app calls may affect external systems. Keep their prompts with the
+# user even when shell-command escalations use automatic review.
+[apps._default]
+approvals_reviewer = "user"
