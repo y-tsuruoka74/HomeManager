@@ -233,6 +233,29 @@ git-user personal   # personal プロファイルに切り替え
 切り替え忘れを防げる。新しいホスト（Enterprise GitHub等）を使い始めたら、同様に
 `includeIf` を追加すること。
 
+## lazygitのAIコミットメッセージ生成
+
+files画面で `Ctrl-y` を押すと、ステージ済みの差分から日本語のConventional Commits形式の
+コミットメッセージを生成する。既定ではClaude Haikuを先に実行し、Claude CLIが存在しない、
+または認証・実行エラーになった場合はCodex CLIの軽量モデルへ自動的にフォールバックする。
+Codexはread-onlyで実行する。
+
+```bash
+# 既定値
+export LAZYGIT_COMMIT_AI_PROVIDER=auto
+export LAZYGIT_COMMIT_CODEX_MODEL=gpt-5.4-mini
+export LAZYGIT_COMMIT_CODEX_REASONING=low
+```
+
+特定のproviderへ固定する場合は、lazygitを起動する前に指定する。
+
+```bash
+export LAZYGIT_COMMIT_AI_PROVIDER=claude
+# または
+export LAZYGIT_COMMIT_AI_PROVIDER=codex
+lazygit
+```
+
 ## トラブルシューティング
 
 ### darwin-rebuild コマンドが見つからない
