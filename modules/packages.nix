@@ -43,6 +43,9 @@ in
     ruff         # Python linter/formatter
     uv
     pipx         # Python アプリケーションのインストール
+    nil          # Nix language server
+    nixfmt       # Nix formatter
+    statix       # Nix linter
     ansible      # 構成管理ツール
     opencode     # AI コーディングエージェント CLI
 

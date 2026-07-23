@@ -17,6 +17,9 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Setup lazy.nvim with LazyVim
 require("lazy").setup({
+  -- Home Manager links ~/.config/nvim into the read-only Nix store.
+  -- Keep the runtime lockfile in a writable state directory instead.
+  lockfile = vim.fn.stdpath("state") .. "/lazy-lock.json",
   spec = {
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- Language extras
@@ -25,13 +28,18 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.python" },
     { import = "lazyvim.plugins.extras.lang.json" },
     { import = "lazyvim.plugins.extras.lang.markdown" },
-    -- { import = "lazyvim.plugins.extras.lang.nix" },
+    { import = "lazyvim.plugins.extras.lang.nix" },
     { import = "lazyvim.plugins.extras.lang.docker" },
     { import = "lazyvim.plugins.extras.lang.ansible" },
     { import = "lazyvim.plugins.extras.lang.terraform" },
     { import = "lazyvim.plugins.extras.lang.rust" },
     { import = "lazyvim.plugins.extras.lang.yaml" },
     { import = "lazyvim.plugins.extras.lang.toml" },
+    -- Editing extras
+    { import = "lazyvim.plugins.extras.coding.mini-surround" },
+    { import = "lazyvim.plugins.extras.coding.yanky" },
+    { import = "lazyvim.plugins.extras.editor.inc-rename" },
+    { import = "lazyvim.plugins.extras.editor.snacks_picker" },
     -- Custom plugins
     { import = "plugins" },
   },
