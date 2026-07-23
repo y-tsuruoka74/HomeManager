@@ -4,6 +4,9 @@
     "type": "command",
     "command": "python3 ~/.claude/statusline.py"
   },
+  "enabledPlugins": {
+    "engineering@knowledge-work-plugins": true
+  },
   "permissions": {
     "allow": [
       "Bash(gh pr view*)",
