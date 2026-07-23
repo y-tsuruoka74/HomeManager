@@ -215,23 +215,43 @@ git-user personal   # personal プロファイルに切り替え
 内部では `~/.gitconfig.identity` を該当プロファイルへのシンボリックリンクに張り替えている。
 これは「デフォルト」のプロファイルを決めるもので、下記の自動切り替えが無い場合に使われる。
 
-### ホスト単位での自動切り替え
+### owner 単位での自動切り替え
 
 `ghq.root = ~/Github` の構成上、リポジトリは `~/Github/<host>/<owner>/<repo>` に
-配置される。`github.com`（私用）と `github.sakura.codes`（会社の GitHub Enterprise）の
-ように **ホストと用途が完全に対応している場合**は、`modules/git.nix` の
-`includes` に `includeIf` を追加してディレクトリベースで自動切り替えできる。
+配置される。Home Manager の activation 時に
+`~/.config/git/identities/*.gitconfig` のファイル名を owner 名として読み取り、
+`~/.config/git/auto-identities.gitconfig` に `includeIf` を自動生成する。
 
-```nix
-{
-  condition = "gitdir:~/Github/github.com/";
-  path = "~/.config/git/identities/personal.gitconfig";
-}
+`<owner>.gitconfig` が `~/Github/github.com/<owner>/` に自動的に対応するため、
+ユーザー名をNix設定へハードコードする必要はない。
+
+マシン固有の `~/.config/git/identities/<owner>.gitconfig` には `[user]` と `[github]` に加え、
+`core.sshCommand` で対応する秘密鍵を指定する。
+
+これにより、対象リポジトリでは `git-user` のデフォルト設定にかかわらず正しいユーザーで
+commit と push/fetch が行われる。新しい owner は identity ファイルを追加して
+`git-identities-sync` を実行するだけで反映できる。`darwin-rebuild switch` と `git-user` の
+実行時にも同じ同期処理が自動実行される。
+
+```gitconfig
+[core]
+  sshCommand = ssh -F /dev/null -i ~/.ssh/<秘密鍵> -o IdentitiesOnly=yes
 ```
 
-こうすると `cd` するだけで正しいアイデンティティが自動的に有効になり、`git-user` での
-切り替え忘れを防げる。新しいホスト（Enterprise GitHub等）を使い始めたら、同様に
-`includeIf` を追加すること。
+`~/.ssh/config` の `IdentityFile` が別アカウントの鍵を追加しないよう、複数アカウントでは
+`-F /dev/null` を付けて identity ファイル側の鍵だけを使用する。
+
+確認:
+
+```bash
+git config github.login
+git config core.sshCommand
+cat ~/.config/git/auto-identities.gitconfig
+ssh -T -i ~/.ssh/<対応する鍵> -o IdentitiesOnly=yes git@github.com
+```
+
+`gh` CLI のログイン状態は Git の SSH 認証とは独立している。`gh` コマンドも利用する場合は、
+各アカウントを `gh auth login` で登録したうえで `gh auth switch --user <owner>` を使用する。
 
 ## lazygitのAIコミットメッセージ生成
 

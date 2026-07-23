@@ -68,6 +68,9 @@ function git-user() {
   fi
 
   ln -sf "$target" "$identity_file"
+  if (( $+commands[git-identities-sync] )); then
+    git-identities-sync
+  fi
   echo "git user を '$1' に切り替えました:"
   git config --file "$target" --get-regexp '^user\.'
 }
