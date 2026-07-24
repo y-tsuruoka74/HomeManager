@@ -8,6 +8,8 @@ return {
       typescriptreact = { "biome", "prettier", stop_after_first = true },
       json = { "biome", "prettier", stop_after_first = true },
       jsonc = { "biome", stop_after_first = true },
+      markdown = { "markdownlint-cli2" },
+      ["markdown.mdx"] = { "markdownlint-cli2" },
     },
     formatters = {
       biome = {

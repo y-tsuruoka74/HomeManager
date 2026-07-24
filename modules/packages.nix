@@ -46,6 +46,7 @@ in
     nil          # Nix language server
     nixfmt       # Nix formatter
     statix       # Nix linter
+    markdownlint-cli2 # Markdown linter/formatter
     ansible      # 構成管理ツール
     opencode     # AI コーディングエージェント CLI
 
