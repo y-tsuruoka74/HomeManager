@@ -43,6 +43,7 @@
     enable = true;
     settings = {
       add_newline = true ;
+      command_timeout = 1000;
       format = "$directory$git_branch\${custom.git_user}$git_commit$git_state$git_status$nix_shell$cmd_duration$jobs$line_break$character";
       directory = {
         truncate_to_repo = false;
@@ -60,7 +61,7 @@
       };
       custom.git_user = {
         command = "git config github.login";
-        when = "git rev-parse --is-inside-work-tree 2>/dev/null";
+        require_repo = true;
         format = "[$output](dimmed white) ";
       };
       nix_shell = {

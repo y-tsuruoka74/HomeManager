@@ -31,6 +31,8 @@ resize_mode = ""                  # 既定は prefix+r で reload_config と衝�
                                    # tmux の「bind -r H/J/K/L でリサイズ」と1:1の対応は無いため、
                                    # 必要なら prefix+alt+r 等に割り当てて試す
 detach = "prefix+q"
+open_notification_target = "prefix+o" # 通知が来たpaneへジャンプ。デフォルト値だが未指定だと
+                                       # 効かなかったため明示指定（2026-07-25調査）
 
 # tmux の `bind -n 'C-h/j/k/l'`（prefix なし直接バインド）に相当。
 # 注: herdr に vim-tmux-navigator 同等の「vim内なら実キーを素通しする」機能があるかは未確認。
@@ -48,9 +50,21 @@ show_agent_labels_on_pane_borders = true
 
 [ui.toast]
 # エージェントがユーザーの応答待ちになったら通知（tmux にはない、Herdr採用の主目的）
-# 切り分けのため一時的に "herdr"（アプリ内トースト）に変更。system(OS通知)で
-# blocked状態への遷移時に通知が出ない問題を調査中。原因判明後にsystemへ戻すか検討する。
+# "herdr"(アプリ内トースト) と "system"(OSポップアップ) はトレードオフ（2026-07-25調査）:
+#   - system: 他アプリを見ていても気づけるが、open_notification_target(prefix+o)で
+#     ジャンプできない（herdrが「今表示中の通知」を追跡するのはアプリ内トーストのみ）
+#   - herdr: open_notification_target でジャンプできる。本採用の目的はジャンプ機能なのでこちらを選択
+# systemを試す場合のチェックリスト:
+#   1. システム設定 → 通知 で terminal-notifier / System Events / スクリプトエディタが許可されているか
+#   2. WezTerm→System Eventsのオートメーション権限（自動化）が許可されているか
+#   3. herdrの設定画面(toasts)で手動選択した値がメモリ上に残ることがあるため、
+#      `herdr server reload-config` で明示的にconfig.tomlの値を再適用する
 delivery = "herdr"
+
+[ui.toast.herdr]
+# 既定は bottom-right。デフォルトだと小さく気づきにくいため、
+# 目に入りやすい画面左上に変更（サイズ/フォント自体を変える設定は無い）
+position = "top-left"
 
 [ui.sound]
 enabled = true
