@@ -92,5 +92,23 @@ in
       source = ./../dotfiles/claude/hooks/gh-api-guard.py;
       force = true;
     };
+    # herdr連携: セッション開始をherdrに通知するフック（`herdr integration install claude` 相当）
+    ".claude/hooks/herdr-agent-state.sh" = {
+      source = ./../dotfiles/claude/hooks/herdr-agent-state.sh;
+      force = true;
+    };
+
+    # herdr連携: Codex側のセッション通知フック（`herdr integration install codex` 相当）
+    # ~/.codex/config.toml はCodexアプリ側でも更新されるためHome Managerで管理しない
+    # （packages.nixのcodexWithUsageラッパーで `-c features.hooks=true` を注入する）が、
+    # hooks.json とフックスクリプト自体はアプリに書き換えられないため管理下に置く。
+    ".codex/herdr-agent-state.sh" = {
+      source = ./../dotfiles/codex/herdr-agent-state.sh;
+      force = true;
+    };
+    ".codex/hooks.json" = {
+      source = ./../dotfiles/codex/hooks.json;
+      force = true;
+    };
   };
 }

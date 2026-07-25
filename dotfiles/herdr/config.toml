@@ -1,0 +1,70 @@
+# herdr configuration
+# tmux (prefix: Ctrl+a) / wezterm の操作感に寄せた設定。
+# 用語対応: workspace ~= tmux session, tab ~= tmux window, pane ~= tmux pane
+
+[theme]
+name = "catppuccin"
+
+[theme.custom]
+# wezterm/tmux で使っているアクセントカラーに合わせる
+accent = "#9c7af2"
+
+[terminal]
+# 新規 pane/tab/workspace は起動元の cwd を継承（tmux の -c "#{pane_current_path}" 相当）
+new_cwd = "follow"
+
+[keys]
+# tmux 側で Ctrl+b から変更済みの prefix に合わせる
+prefix = "ctrl+a"
+
+new_tab = "prefix+c"              # 新規タブ = tmux "bind c new-window"（cwd継承は terminal.new_cwd で対応済み）
+rename_tab = "prefix+shift+t"     # デフォルトのまま。tmux は名前変更の専用バインドなし（automatic-rename off で維持）
+next_tab = "prefix+n"             # デフォルトのまま
+previous_tab = "prefix+p"         # デフォルトのまま
+switch_tab = "prefix+1..9"        # デフォルトのまま。tmux も base-index 1 なので数字は一致
+
+split_vertical = "prefix+v"       # 左右分割（tmux の "|" 相当）。"|"/"pipe" という名前のキーは
+                                   # ドキュメントに記載がなく直接バインドできるか未確認なため既定を維持
+split_horizontal = "prefix+minus" # 上下分割 = tmux "bind - split-window -v"（キー自体は一致）
+reload_config = "prefix+r"        # 設定リロード = tmux "bind r source-file ..."（tmux と同じキーに変更）
+resize_mode = ""                  # 既定は prefix+r で reload_config と衝突するため無効化。
+                                   # tmux の「bind -r H/J/K/L でリサイズ」と1:1の対応は無いため、
+                                   # 必要なら prefix+alt+r 等に割り当てて試す
+detach = "prefix+q"
+
+# tmux の `bind -n 'C-h/j/k/l'`（prefix なし直接バインド）に相当。
+# 注: herdr に vim-tmux-navigator 同等の「vim内なら実キーを素通しする」機能があるかは未確認。
+# vim のノーマルモードで Ctrl+hjkl を使う場合は挙動を要確認。
+focus_pane_left = "ctrl+h"
+focus_pane_down = "ctrl+j"
+focus_pane_up = "ctrl+k"
+focus_pane_right = "ctrl+l"
+
+[ui]
+accent = "#9c7af2"
+pane_borders = true
+# フォーカスしていない pane のボーダーにエージェント名（claude/codexなど）を表示
+show_agent_labels_on_pane_borders = true
+
+[ui.toast]
+# エージェントがユーザーの応答待ちになったら通知（tmux にはない、Herdr採用の主目的）
+# 切り分けのため一時的に "herdr"（アプリ内トースト）に変更。system(OS通知)で
+# blocked状態への遷移時に通知が出ない問題を調査中。原因判明後にsystemへ戻すか検討する。
+delivery = "herdr"
+
+[ui.sound]
+enabled = true
+
+[session]
+# サーバー再起動後、Claude Code/Codex 等の会話セッションを resume する
+resume_agents_on_restore = true
+
+[experimental]
+# サーバー再起動を挟んでも各 pane の直近のスクロールバック内容を保持する
+# （tmux-resurrect の @resurrect-capture-pane-contents on 相当）
+pane_history = true
+# prefix モード中、日本語IMEが有効でもコマンドキーが通るように一時的にASCII入力源へ切替
+switch_ascii_input_source_in_prefix = true
+# Claude Code / Codex のカーソルを外側ターミナルに露出させ、IME変換候補ウィンドウの追従を保つ
+reveal_hidden_cursor_for_cjk_ime = true
+cjk_ime_agents = ["claude", "codex"]

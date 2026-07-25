@@ -6,6 +6,7 @@ let
   codexWithUsage = pkgs.writeShellScriptBin "codex" ''
     exec ${pkgs.codex}/bin/codex \
       -c 'tui.status_line=["model-with-reasoning","current-dir","git-branch","context-remaining","five-hour-limit","weekly-limit","total-input-tokens","total-output-tokens"]' \
+      -c 'features.hooks=true' \
       "$@"
   '';
 in
@@ -27,6 +28,7 @@ in
     ollama              # ローカル LLM ランナー
     github-copilot-cli  # GitHub Copilot CLI
     codexWithUsage      # OpenAI Codex CLI（モデル・コンテキスト・利用量を常時表示）
+    herdr               # ターミナル常駐の AI エージェントマルチプレクサ
 
     # 開発ツール
     ripgrep      # 高速ファイル検索
