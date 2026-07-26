@@ -128,6 +128,18 @@
           }
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/herdr-pane-title.py",
+            "timeout": 5
+          }
+        ]
+      }
     ]
   }
 }

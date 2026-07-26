@@ -97,6 +97,12 @@ in
       source = ./../dotfiles/claude/hooks/herdr-agent-state.sh;
       force = true;
     };
+    # Herdr表示用: 最新プロンプトをpaneタイトルとして1時間表示する。
+    # 状態（working/blocked/idle）は変更せず、公式連携の画面検出と競合させない。
+    ".claude/hooks/herdr-pane-title.py" = {
+      source = ./../dotfiles/claude/hooks/herdr-pane-title.py;
+      force = true;
+    };
 
     # herdr連携: Codex側のセッション通知フック（`herdr integration install codex` 相当）
     # ~/.codex/config.toml はCodexアプリ側でも更新されるためHome Managerで管理しない
@@ -108,6 +114,31 @@ in
     };
     ".codex/hooks.json" = {
       source = ./../dotfiles/codex/hooks.json;
+      force = true;
+    };
+
+    # herdr連携: GitHub Copilot CLIのセッションIDを通知し、再起動後にresume可能にする。
+    # フック本体はインストール中のHerdrと同じソースを参照してバージョンを同期する。
+    ".copilot/hooks/herdr-agent-state.sh" = {
+      source = "${pkgs.herdr.src}/src/integration/assets/copilot/herdr-agent-state.sh";
+      force = true;
+    };
+    ".copilot/settings.json" = {
+      text = builtins.toJSON {
+        hooks.SessionStart = [
+          {
+            bash = "bash '${config.home.homeDirectory}/.copilot/hooks/herdr-agent-state.sh'";
+            timeoutSec = 10;
+            type = "command";
+          }
+        ];
+      };
+      force = true;
+    };
+
+    # herdr連携: OpenCodeのライフサイクル状態とセッションIDを直接通知する。
+    ".config/opencode/plugins/herdr-agent-state.js" = {
+      source = "${pkgs.herdr.src}/src/integration/assets/opencode/herdr-agent-state.js";
       force = true;
     };
   };

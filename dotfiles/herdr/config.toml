@@ -34,13 +34,12 @@ detach = "prefix+q"
 open_notification_target = "prefix+o" # 通知が来たpaneへジャンプ。デフォルト値だが未指定だと
                                        # 効かなかったため明示指定（2026-07-25調査）
 
-# tmux の `bind -n 'C-h/j/k/l'`（prefix なし直接バインド）に相当。
-# 注: herdr に vim-tmux-navigator 同等の「vim内なら実キーを素通しする」機能があるかは未確認。
-# vim のノーマルモードで Ctrl+hjkl を使う場合は挙動を要確認。
-focus_pane_left = "ctrl+h"
-focus_pane_down = "ctrl+j"
-focus_pane_up = "ctrl+k"
-focus_pane_right = "ctrl+l"
+# Ctrl+hjkl を直接割り当てると LazyVim より先に Herdr が入力を消費するため、
+# エディタと競合しない prefix 経由でペインを移動する。
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
 
 [ui]
 accent = "#9c7af2"
