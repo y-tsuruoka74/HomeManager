@@ -3,9 +3,10 @@
 let
   # ~/.codex/config.toml は Codex アプリ側でも更新されるため、ファイル全体を
   # Home Manager で管理せず、CLI 起動時にステータスラインだけを上書きする。
+  # Codex のステータスラインは1行のみのため、狭いpaneでも利用状況が残る順に並べる。
   codexWithUsage = pkgs.writeShellScriptBin "codex" ''
     exec ${pkgs.codex}/bin/codex \
-      -c 'tui.status_line=["model-with-reasoning","current-dir","git-branch","context-remaining","five-hour-limit","weekly-limit","total-input-tokens","total-output-tokens"]' \
+      -c 'tui.status_line=["model-with-reasoning","context-remaining","five-hour-limit","weekly-limit","project-name","git-branch","total-input-tokens","total-output-tokens"]' \
       -c 'features.hooks=true' \
       "$@"
   '';
