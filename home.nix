@@ -17,7 +17,7 @@
     ./modules/git.nix
     ./modules/editor.nix
     ./modules/terminal.nix
-    ./modules/ai.nix
+    ./modules/ai
     ./modules/apps.nix
   ];
 }
