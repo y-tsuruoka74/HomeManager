@@ -92,6 +92,9 @@ in
     xh          # HTTP クライアント
     hey         # HTTP ベンチマークツール
 
+    # 画像
+    imagemagick  # nvim (snacks.nvim image) からの画像変換・ラスタライズ用（magick/convert CLI）
+
     # その他
     crush              # Glamourous AI coding agent
     usacloud            # さくらクラウド CLI
