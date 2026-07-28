@@ -29,6 +29,7 @@ in
     github-copilot-cli  # GitHub Copilot CLI
     codexWithUsage      # OpenAI Codex CLI（モデル・コンテキスト・利用量を常時表示）
     herdr               # ターミナル常駐の AI エージェントマルチプレクサ
+    graphify            # コード/ドキュメントをナレッジグラフ化する AI コーディングスキル
 
     # 開発ツール
     ripgrep      # 高速ファイル検索
