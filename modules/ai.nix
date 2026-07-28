@@ -1,6 +1,31 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 
 let
+  # GitHub Copilot CLIの認証トークンをKeychain(keytar)ではなく~/.copilot/config.jsonに平文保存させる。
+  # Nix由来のnodeバイナリはad-hoc署名のためstoreパスが変わるたびにKeychainの信頼情報がリセットされ、
+  # 毎回アクセス許可ダイアログが出てしまう。storeTokenPlaintext を有効にするとcopilot-cli自身がkeytarを
+  # 使わなくなり、ダイアログが恒久的に出なくなる（トレードオフとしてトークンは平文でホームディレクトリに残る）。
+  copilotConfigSync = pkgs.writeShellApplication {
+    name = "copilot-config-store-token-plaintext-sync";
+    runtimeInputs = [ pkgs.coreutils pkgs.jq ];
+    text = ''
+      config_dir="${config.home.homeDirectory}/.copilot"
+      config_file="$config_dir/config.json"
+
+      mkdir -p "$config_dir"
+
+      if [ -f "$config_file" ]; then
+        temporary_file=$(mktemp "$config_file.tmp.XXXXXX")
+        trap 'rm -f "$temporary_file"' EXIT
+        jq '.storeTokenPlaintext = true' "$config_file" > "$temporary_file"
+        mv "$temporary_file" "$config_file"
+        trap - EXIT
+      else
+        printf '{"storeTokenPlaintext": true}\n' > "$config_file"
+      fi
+    '';
+  };
+
   superpowersSrc = pkgs.fetchFromGitHub {
     owner = "obra";
     repo = "superpowers";
@@ -35,6 +60,13 @@ let
   '';
 in
 {
+  home.packages = [ copilotConfigSync ];
+
+  home.activation.copilotConfigStoreTokenPlaintext =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      ${copilotConfigSync}/bin/copilot-config-store-token-plaintext-sync
+    '';
+
   home.file = {
     # superpowers Claude Code プラグイン
     ".claude/plugins/superpowers" = {
