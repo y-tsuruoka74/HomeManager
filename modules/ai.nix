@@ -51,6 +51,17 @@ let
 
   claudeDir = "${config.home.homeDirectory}/.claude";
 
+  # Tokiweave連携: Copilot CLIのツール実行・終了イベントをTokiweaveの作業ログへ転送する。
+  # フック本体は TOKIWEAVE_HOOK_COMMAND が無ければ即終了するため、Tokiweave経由以外の
+  # copilot利用には影響しない。
+  tokiweaveCopilotHook = [
+    {
+      bash = "bash '${config.home.homeDirectory}/.copilot/hooks/tokiweave-agent-hook.sh'";
+      timeoutSec = 10;
+      type = "command";
+    }
+  ];
+
   # graphify スキル定義（Claude Code / Codex 共通のパッケージから抽出。python バージョン非依存にするため glob で取得）
   graphifySkillClaude = pkgs.runCommand "graphify-skill-claude.md" { } ''
     cp ${pkgs.graphify}/lib/*/site-packages/graphify/skill.md $out
@@ -175,15 +186,29 @@ in
       source = "${pkgs.herdr.src}/src/integration/assets/copilot/herdr-agent-state.sh";
       force = true;
     };
+
+    # Tokiweave連携: 作業ログ用にツール実行と終了イベントを転送するフック。
+    ".copilot/hooks/tokiweave-agent-hook.sh" = {
+      source = ./../dotfiles/copilot/tokiweave-agent-hook.sh;
+      force = true;
+    };
+
+    # settings.json は単一ファイルなので、herdrとTokiweaveのフックをここでまとめて登録する。
     ".copilot/settings.json" = {
       text = builtins.toJSON {
-        hooks.SessionStart = [
-          {
-            bash = "bash '${config.home.homeDirectory}/.copilot/hooks/herdr-agent-state.sh'";
-            timeoutSec = 10;
-            type = "command";
-          }
-        ];
+        hooks = {
+          SessionStart = [
+            {
+              bash = "bash '${config.home.homeDirectory}/.copilot/hooks/herdr-agent-state.sh'";
+              timeoutSec = 10;
+              type = "command";
+            }
+          ];
+          PostToolUse = tokiweaveCopilotHook;
+          PostToolUseFailure = tokiweaveCopilotHook;
+          Stop = tokiweaveCopilotHook;
+          SessionEnd = tokiweaveCopilotHook;
+        };
       };
       force = true;
     };
@@ -191,6 +216,13 @@ in
     # herdr連携: OpenCodeのライフサイクル状態とセッションIDを直接通知する。
     ".config/opencode/plugins/herdr-agent-state.js" = {
       source = "${pkgs.herdr.src}/src/integration/assets/opencode/herdr-agent-state.js";
+      force = true;
+    };
+
+    # Tokiweave連携: OpenCodeのツール実行と終了をTokiweaveの作業ログへ転送する。
+    # プラグインは ~/.config/opencode/plugins 配下が自動読み込みされるため登録不要。
+    ".config/opencode/plugins/tokiweave-agent-hook.js" = {
+      source = ./../dotfiles/opencode/tokiweave-agent-hook.js;
       force = true;
     };
   };
