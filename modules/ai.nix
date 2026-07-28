@@ -25,6 +25,14 @@ let
   };
 
   claudeDir = "${config.home.homeDirectory}/.claude";
+
+  # graphify スキル定義（Claude Code / Codex 共通のパッケージから抽出。python バージョン非依存にするため glob で取得）
+  graphifySkillClaude = pkgs.runCommand "graphify-skill-claude.md" { } ''
+    cp ${pkgs.graphify}/lib/*/site-packages/graphify/skill.md $out
+  '';
+  graphifySkillCodex = pkgs.runCommand "graphify-skill-codex.md" { } ''
+    cp ${pkgs.graphify}/lib/*/site-packages/graphify/skill-codex.md $out
+  '';
 in
 {
   home.file = {
@@ -39,6 +47,18 @@ in
     ".claude/skills" = {
       source = "${superpowersSrc}/skills";
       recursive = true;
+      force = true;
+    };
+
+    # graphify スキル（コード/ドキュメント/画像/動画をナレッジグラフ化。Claude Code用）
+    ".claude/skills/graphify/SKILL.md" = {
+      source = graphifySkillClaude;
+      force = true;
+    };
+
+    # graphify スキル（Codex CLI用。~/.codex/skills は Codex 本体が管理するがサブディレクトリは未使用のため追加可能）
+    ".codex/skills/graphify/SKILL.md" = {
+      source = graphifySkillCodex;
       force = true;
     };
 
