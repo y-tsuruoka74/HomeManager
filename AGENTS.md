@@ -46,9 +46,11 @@ cat ~/.local/state/home-manager/home-manager.log
 │   ├── darwin.nix       # nix-darwin システム設定・Homebrew 管理
 │   ├── packages.nix     # パッケージ管理
 │   ├── zsh.nix          # zsh 設定（starship, fzf, zoxide, direnv 統合）
-│   ├── git.nix          # Git 設定
-│   ├── neovim.nix       # Neovim プログラム設定
-│   └── files.nix        # ファイル管理（home.file.*）
+│   ├── git.nix          # Git・lazygit 設定
+│   ├── editor.nix       # Neovim プログラム設定
+│   ├── terminal.nix     # tmux, zellij, wezterm, herdr dotfiles
+│   ├── ai/              # AI ツール別設定（claude/codex/copilot/opencode）
+│   └── apps.nix         # hammerspoon, gwq dotfiles
 ├── dotfiles/            # 生の dotfiles
 │   ├── zsh/
 │   │   ├── extra.zsh    # エイリアス・関数・環境変数
@@ -62,6 +64,7 @@ cat ~/.local/state/home-manager/home-manager.log
 │   │   └── init.lua     # Hammerspoon macOS 自動化
 │   ├── gwq/
 │   │   └── config.toml  # gwq リポジトリ管理設定
+│   ├── claude/, codex/, copilot/, opencode/  # AI ツール別設定・herdr/tokiweave連携フック
 │   └── nix/
 │       └── devshell.nix
 ├── AGENTS.md            # このファイル
@@ -115,7 +118,7 @@ programs.git = {
 ### 方法 B: 外部ファイルを参照
 
 ```nix
-# modules/files.nix
+# modules/editor.nix
 home.file.".config/nvim" = {
   source = ./../dotfiles/nvim;
   recursive = true;

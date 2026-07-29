@@ -19,8 +19,13 @@ nix-darwin + Home Manager で macOS 環境全体を管理するリポジトリ�
 │   ├── zsh.nix          # zsh・starship・zoxide・fzf・direnv 設定
 │   ├── git.nix          # Git・lazygit 設定
 │   ├── editor.nix       # Neovim 設定（programs + dotfiles）
-│   ├── terminal.nix     # ターミナル dotfiles（tmux, zellij, wezterm）
-│   ├── ai.nix           # AI ツール dotfiles（claude）
+│   ├── terminal.nix     # ターミナル dotfiles（tmux, zellij, wezterm, herdr）
+│   ├── ai/              # AI ツール別設定（claude/codex/copilot/opencode）
+│   │   ├── default.nix  # 4ファイルをまとめて import
+│   │   ├── claude.nix
+│   │   ├── codex.nix
+│   │   ├── copilot.nix
+│   │   └── opencode.nix
 │   └── apps.nix         # その他アプリ dotfiles（hammerspoon, gwq）
 ├── dotfiles/            # 生の dotfiles
 │   ├── zsh/
@@ -35,16 +40,27 @@ nix-darwin + Home Manager で macOS 環境全体を管理するリポジトリ�
 │   │   └── tmux.conf    # tmux 設定
 │   ├── zellij/
 │   │   └── config.kdl   # zellij 設定
+│   ├── herdr/
+│   │   └── config.toml  # herdr（ターミナル常駐AIエージェントマルチプレクサ）設定
 │   ├── hammerspoon/
 │   │   └── init.lua     # Hammerspoon macOS 自動化
 │   ├── lazygit/
-│   │   ├── config.yml          # lazygit 設定
-│   │   └── gen-commit-msg.sh   # コミットメッセージ自動生成スクリプト
+│   │   ├── config.yml                 # lazygit 設定
+│   │   ├── gen-commit-msg.sh          # コミットメッセージ自動生成スクリプト
+│   │   └── prune-merged-branches.sh   # マージ済みブランチ削除スクリプト
 │   ├── gwq/
 │   │   └── config.toml  # gwq リポジトリ管理設定
 │   ├── claude/
 │   │   ├── settings.json  # Claude Code 設定
-│   │   └── statusline.py  # Claude Code ステータスライン
+│   │   ├── statusline.py  # Claude Code ステータスライン
+│   │   └── hooks/         # Claude Code フック
+│   ├── codex/
+│   │   ├── hooks.json             # Codex CLI フック設定
+│   │   └── herdr-agent-state.sh   # herdr連携スクリプト
+│   ├── copilot/
+│   │   └── tokiweave-agent-hook.sh  # Tokiweave連携フック
+│   ├── opencode/
+│   │   └── tokiweave-agent-hook.js  # Tokiweave連携フック
 │   └── nix/
 │       └── devshell.nix # Nix devshell テンプレート
 └── README.md            # このファイル
@@ -57,8 +73,8 @@ nix-darwin + Home Manager で macOS 環境全体を管理するリポジトリ�
 | CLI ツール（ripgrep, lazygit 等） | Home Manager（`packages.nix`） |
 | シェル・Git・Neovim 設定 | Home Manager（各モジュール） |
 | Hammerspoon・gwq 等の dotfiles | Home Manager（`apps.nix`） |
-| tmux・zellij・wezterm dotfiles | Home Manager（`terminal.nix`） |
-| Claude dotfiles | Home Manager（`ai.nix`） |
+| tmux・zellij・wezterm・herdr dotfiles | Home Manager（`terminal.nix`） |
+| Claude/Codex/Copilot/OpenCode dotfiles | Home Manager（`ai/`） |
 | Homebrew formulae（borders 等） | nix-darwin（`darwin.nix`） |
 | Homebrew casks（1password, wezterm 等） | nix-darwin（`darwin.nix`） |
 | macOS システム設定 | nix-darwin（`darwin.nix`） |
@@ -115,7 +131,7 @@ homebrew.casks = [
 
 ### dotfiles の追加
 
-`dotfiles/` に設定ファイルを配置し、`modules/files.nix` から参照:
+`dotfiles/` に設定ファイルを配置し、該当カテゴリのモジュール（`terminal.nix`, `ai/<tool>.nix`, `apps.nix` 等）から参照:
 
 ```nix
 home.file.".config/<app>/config.yml".source = ./../dotfiles/app/config.yml;
