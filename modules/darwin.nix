@@ -54,6 +54,62 @@
     };
   };
 
+  # lazygitが長時間高CPUで張り付いていないか定期チェックし、該当があれば強制終了する
+  # （lazygitがUIループのハングでCPUを専有し続け、ファンが高回転になる事象が発生したため）
+  launchd.user.agents.lazygit-hang-watchdog = {
+    serviceConfig = {
+      ProgramArguments = [
+        "${pkgs.bash}/bin/bash"
+        "-c"
+        ''
+          set -uo pipefail
+
+          notify() {
+            local title="$1" body="$2"
+            /opt/homebrew/bin/terminal-notifier -title "$title" -message "$body"
+          }
+
+          # ps の etime (例: "05:54:12" / "1-05:54:12" / "12:34") を秒数に変換
+          etime_to_seconds() {
+            local etime="$1" days=0 rest="$1" h=0 m=0 s=0
+            if [[ "$etime" == *-* ]]; then
+              days="''${etime%%-*}"
+              rest="''${etime#*-}"
+            fi
+            IFS=: read -ra parts <<< "$rest"
+            case "''${#parts[@]}" in
+              3) h="''${parts[0]}"; m="''${parts[1]}"; s="''${parts[2]}" ;;
+              2) m="''${parts[0]}"; s="''${parts[1]}" ;;
+              1) s="''${parts[0]}" ;;
+            esac
+            echo $(( 10#$days*86400 + 10#$h*3600 + 10#$m*60 + 10#$s ))
+          }
+
+          check_stuck_lazygit() {
+            local min_minutes="$1" min_cpu="$2"
+            while read -r pid pcpu etime; do
+              [ -z "$pid" ] && continue
+              local total_seconds total_minutes cpu_int
+              total_seconds=$(etime_to_seconds "$etime")
+              total_minutes=$(( total_seconds / 60 ))
+              cpu_int="''${pcpu%.*}"
+              if [ "$total_minutes" -ge "$min_minutes" ] && [ "$cpu_int" -ge "$min_cpu" ]; then
+                kill -9 "$pid" 2>/dev/null
+                notify "lazygitを自動終了しました" "PID ''${pid} が ''${total_minutes}分間 CPU ''${pcpu}% で稼働していたため終了しました"
+              fi
+            done < <(ps -axo pid=,pcpu=,etime=,comm= | grep "bin/lazygit" | awk '{print $1, $2, $3}')
+          }
+
+          check_stuck_lazygit 60 30
+        ''
+      ];
+      StartInterval = 900;
+      RunAtLoad = false;
+      StandardOutPath = "/tmp/lazygit-hang-watchdog.log";
+      StandardErrorPath = "/tmp/lazygit-hang-watchdog.log";
+    };
+  };
+
   # システムのステートバージョン
   system.stateVersion = 5;
 

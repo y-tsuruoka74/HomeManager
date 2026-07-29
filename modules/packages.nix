@@ -44,6 +44,7 @@ in
     python314
     rustc
     cargo
+    rust-analyzer # Rust language server（nvim rustaceanvim用）
     ruff         # Python linter/formatter
     uv
     pipx         # Python アプリケーションのインストール
