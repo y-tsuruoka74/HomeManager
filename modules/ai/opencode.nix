@@ -146,12 +146,5 @@ in
       source = "${pkgs.herdr.src}/src/integration/assets/opencode/herdr-agent-state.js";
       force = true;
     };
-
-    # Tokiweave連携: OpenCodeのツール実行と終了をTokiweaveの作業ログへ転送する。
-    # プラグインは ~/.config/opencode/plugins 配下が自動読み込みされるため登録不要。
-    ".config/opencode/plugins/tokiweave-agent-hook.js" = {
-      source = ./../../dotfiles/opencode/tokiweave-agent-hook.js;
-      force = true;
-    };
   };
 }

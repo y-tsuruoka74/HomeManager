@@ -57,10 +57,6 @@ nix-darwin + Home Manager で macOS 環境全体を管理するリポジトリ�
 │   ├── codex/
 │   │   ├── hooks.json             # Codex CLI フック設定
 │   │   └── herdr-agent-state.sh   # herdr連携スクリプト
-│   ├── copilot/
-│   │   └── tokiweave-agent-hook.sh  # Tokiweave連携フック
-│   ├── opencode/
-│   │   └── tokiweave-agent-hook.js  # Tokiweave連携フック
 │   └── nix/
 │       └── devshell.nix # Nix devshell テンプレート
 └── README.md            # このファイル
