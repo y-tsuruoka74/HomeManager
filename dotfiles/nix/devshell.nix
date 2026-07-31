@@ -25,6 +25,7 @@
         # Rust
         rustc
         cargo
+        rustfmt
 
         # ビルドツール
         pkg-config

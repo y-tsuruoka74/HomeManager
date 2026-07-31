@@ -18,6 +18,9 @@ config.automatically_reload_config = true
 config.window_close_confirmation = "NeverPrompt"
 config.default_cursor_style = "BlinkingBar"
 config.use_ime = true
+config.hide_mouse_cursor_when_typing = true
+config.scrollback_lines = 10000
+config.switch_to_last_active_tab_when_closing_tab = true
 
 -- フォント設定
 config.font = wezterm.font("Hackgen Console NF")
@@ -168,5 +171,4 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 end)
 
 return config
-
 
