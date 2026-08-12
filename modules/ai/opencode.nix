@@ -22,22 +22,15 @@ let
           baseURL = "https://gateway.aipf-dev.sakuraha.jp/v1";
         };
         models = {
-          "GLM-4.7" = {
-            name = "AI Engine Dev - glm-4.7";
+          "preview/gemma-4-31B-it" = {
+            name = "AI Engine Dev - preview/gemma-4-31B-it";
             limit = {
               context = 128000;
               output = 5000;
             };
           };
-          "Qwen3-Coder-480B-A35B-Instruct-FP8" = {
-            name = "AI Engine Dev - qwen3-coder-480b-a35b-instruct-fp8";
-            limit = {
-              context = 1048576;
-              output = 5000;
-            };
-          };
-          "preview/Kimi-K2.5" = {
-            name = "AI Engine Dev - preview/Kimi-K2.5";
+          "preview/Kimi-K2.7-Code" = {
+            name = "AI Engine Dev - preview/Kimi-K2.7-Code";
             limit = {
               context = 1048576;
               output = 5000;
@@ -52,17 +45,52 @@ let
           baseURL = "https://api.ai.sakura.ad.jp/v1";
         };
         models = {
-          "Qwen3-Coder-480B-A35B-Instruct-FP8" = {
-            name = "AI Engine Prod - qwen3-coder-480b-a35b-instruct-fp8";
+          "preview/Kimi-K2.7-Code" = {
+            name = "AI Engine Prod - preview/Kimi-K2.7-Code";
             limit = {
               context = 1048576;
               output = 5000;
             };
           };
-          "preview/Kimi-K2.7-Code" = {
-            name = "AI Engine Prod - preview/Kimi-K2.7-Code";
+          "preview/Kimi-K2.6" = {
+            name = "AI Engine Prod - preview/Kimi-K2.6";
             limit = {
               context = 1048576;
+              output = 5000;
+            };
+          };
+          "gpt-oss-120b" = {
+            name = "AI Engine Prod - gpt-oss-120b";
+            limit = {
+              context = 128000;
+              output = 5000;
+            };
+          };
+          "preview/Qwen3.6-35B-A3B" = {
+            name = "AI Engine Prod - preview/Qwen3.6-35B-A3B";
+            limit = {
+              context = 128000;
+              output = 5000;
+            };
+          };
+          "preview/Qwen3-VL-30B-A3B-Instruct" = {
+            name = "AI Engine Prod - preview/Qwen3-VL-30B-A3B-Instruct";
+            limit = {
+              context = 128000;
+              output = 5000;
+            };
+          };
+          "llm-jp-3.1-8x13b-instruct4" = {
+            name = "AI Engine Prod - llm-jp-3.1-8x13b-instruct4";
+            limit = {
+              context = 128000;
+              output = 5000;
+            };
+          };
+          "preview/gemma-4-31B-it" = {
+            name = "AI Engine Prod - preview/gemma-4-31B-it";
+            limit = {
+              context = 128000;
               output = 5000;
             };
           };
