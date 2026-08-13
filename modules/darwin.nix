@@ -166,6 +166,7 @@
       "elgato-stream-deck"  # Stream Deck 設定ツール
       "font-hackgen"
       "font-hackgen-nerd"
+      "google-chrome"
       "hammerspoon"
       "logi-options+"       # Logicool マウス/キーボード設定ツール
       "multipass"

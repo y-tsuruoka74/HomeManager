@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# lazygitからの起動時は.zshrc（extra.zsh）を経由しないPATHで実行されることがあり、
+# ~/.local/binにインストールされたclaude CLIが見つからない場合があるため明示的に追加する。
+export PATH="$HOME/.local/bin:$PATH"
+
 # AI provider and model can be overridden per shell/session.
 #   LAZYGIT_COMMIT_AI_PROVIDER=auto|claude|codex
 #   LAZYGIT_COMMIT_CODEX_MODEL=gpt-5.4-mini

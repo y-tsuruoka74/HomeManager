@@ -54,6 +54,7 @@ in
     nixfmt # Nix formatter
     statix # Nix linter
     markdownlint-cli2 # Markdown linter/formatter
+    marp-cli # Markdown からスライド生成
     ansible # 構成管理ツール
     opencode # AI コーディングエージェント CLI
 
