@@ -20,12 +20,13 @@ nix-darwin + Home Manager で macOS 環境全体を管理するリポジトリ�
 │   ├── git.nix          # Git・lazygit 設定
 │   ├── editor.nix       # Neovim 設定（programs + dotfiles）
 │   ├── terminal.nix     # ターミナル dotfiles（tmux, zellij, wezterm, herdr）
-│   ├── ai/              # AI ツール別設定（claude/codex/copilot/opencode）
-│   │   ├── default.nix  # 4ファイルをまとめて import
+│   ├── ai/              # AI ツール別設定（claude/codex/copilot/opencode/pi）
+│   │   ├── default.nix  # 5ファイルをまとめて import
 │   │   ├── claude.nix
 │   │   ├── codex.nix
 │   │   ├── copilot.nix
-│   │   └── opencode.nix
+│   │   ├── opencode.nix
+│   │   └── pi.nix
 │   └── apps.nix         # その他アプリ dotfiles（hammerspoon, gwq）
 ├── dotfiles/            # 生の dotfiles
 │   ├── zsh/
@@ -70,7 +71,7 @@ nix-darwin + Home Manager で macOS 環境全体を管理するリポジトリ�
 | シェル・Git・Neovim 設定 | Home Manager（各モジュール） |
 | Hammerspoon・gwq 等の dotfiles | Home Manager（`apps.nix`） |
 | tmux・zellij・wezterm・herdr dotfiles | Home Manager（`terminal.nix`） |
-| Claude/Codex/Copilot/OpenCode dotfiles | Home Manager（`ai/`） |
+| Claude/Codex/Copilot/OpenCode/Pi dotfiles | Home Manager（`ai/`） |
 | Homebrew formulae（borders 等） | nix-darwin（`darwin.nix`） |
 | Homebrew casks（1password, wezterm 等） | nix-darwin（`darwin.nix`） |
 | macOS システム設定 | nix-darwin（`darwin.nix`） |

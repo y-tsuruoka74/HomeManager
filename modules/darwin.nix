@@ -169,6 +169,7 @@
       "google-chrome"
       "hammerspoon"
       "logi-options+"       # Logicool マウス/キーボード設定ツール
+      "monitorcontrol"      # 外部モニターの輝度・音量をキーボード/メニューバーから制御
       "multipass"
       "obsidian"
       "onedrive"

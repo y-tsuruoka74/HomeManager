@@ -4,5 +4,6 @@
     ./codex.nix
     ./copilot.nix
     ./opencode.nix
+    ./pi.nix
   ];
 }
