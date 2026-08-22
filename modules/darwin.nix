@@ -171,6 +171,7 @@
       "logi-options+"       # Logicool マウス/キーボード設定ツール
       "monitorcontrol"      # 外部モニターの輝度・音量をキーボード/メニューバーから制御
       "multipass"
+      "nvidia-sync"         # リモートLinux/DGX上のIDE・コンテナをSSH経由で起動・管理
       "obsidian"
       "onedrive"
       "raycast"
