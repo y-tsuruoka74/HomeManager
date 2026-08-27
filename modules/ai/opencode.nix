@@ -96,17 +96,34 @@ let
           };
         };
       };
-      local-ollama = {
+      gx10-ollama = {
         npm = "@ai-sdk/openai-compatible";
-        name = "Local LLM - Ollama";
+        name = "GX10 - Ollama";
         options = {
-          baseURL = "http://localhost:11434/v1";
+          baseURL = "http://127.0.0.1:11434/v1";
         };
         models = {
-          "glm-4.7-flash:latest" = {
-            name = "Local LLM - glm-4.7-flash";
+          "qwen3.8:27B" = {
+            name = "GX10 - Qwen 3.8 27B";
             limit = {
-              context = 128000;
+              context = 262144;
+              output = 8192;
+            };
+          };
+        };
+      };
+      gx10 = {
+        npm = "@ai-sdk/openai-compatible";
+        name = "GX10 llama.cpp";
+        options = {
+          baseURL = "http://127.0.0.1:8080/v1";
+          apiKey = "local";
+        };
+        models = {
+          "qwen3-8-flash-next-gguf-ud-q4-k-xl" = {
+            name = "Qwen3.8 Flash Next Q4";
+            limit = {
+              context = 32768;
               output = 8192;
             };
           };
