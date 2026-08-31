@@ -1,0 +1,28 @@
+version: '3'
+
+tasks:
+  default:
+    desc: 利用可能なタスク一覧を表示する
+    cmds:
+      - task --list
+    silent: true
+
+  check:
+    desc: flake全体の構文・評価チェック（システムには一切適用しない）
+    cmds:
+      - nix flake check
+
+  home:
+    desc: home.nix配下（packages.nix, ai/ 等）のみをsudoなしで適用する
+    cmds:
+      - home-manager switch --flake .#y-tsuruoka
+
+  darwin:
+    desc: システム全体（Homebrew, launchd watchdog等）を適用する。sudoが必要
+    cmds:
+      - sudo darwin-rebuild switch --flake .#y-tsuruoka
+
+  update:
+    desc: flake.lock の入力を更新する
+    cmds:
+      - nix flake update

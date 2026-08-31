@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 let
   # ~/.codex/config.toml は Codex アプリ側でも更新されるため、ファイル全体を
@@ -23,6 +23,9 @@ in
     curl
     wget
     tree
+
+    # 環境管理
+    inputs.home-manager.packages.${pkgs.system}.default # `home-manager switch` を単体実行するためのCLI（`task home`用、sudo不要）
 
     # AI ツール
     claude-code # Claude Code CLI
