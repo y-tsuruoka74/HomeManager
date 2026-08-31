@@ -2,10 +2,18 @@
 -- npm install は行わない
 return {
   "barrett-ruth/live-server.nvim",
-  cmd = { "LiveServerStart", "LiveServerStop" },
+  cmd = { "LiveServerStart", "LiveServerStop", "LiveServerToggle" },
   keys = {
-    { "<leader>ls", "<cmd>LiveServerStart<cr>", desc = "Live Server Start" },
-    { "<leader>lS", "<cmd>LiveServerStop<cr>", desc = "Live Server Stop" },
+    { "<leader>ls", "<cmd>LiveServerToggle<cr>", desc = "Live Server Toggle" },
   },
-  config = true,
+  config = function()
+    require("live-server").setup()
+
+    -- 停止し忘れたまま nvim を終了しても live-server プロセスが残り続けないようにする
+    vim.api.nvim_create_autocmd("VimLeavePre", {
+      callback = function()
+        pcall(vim.cmd, "LiveServerStop")
+      end,
+    })
+  end,
 }

@@ -110,6 +110,61 @@
     };
   };
 
+  # live-server (nvim live-server.nvim) の起動しっぱなしを検知し、長時間放置されていたら
+  # 自動終了する（nvimを閉じずにサーバーだけ起動したまま忘れるケースの対策）
+  launchd.user.agents.live-server-watchdog = {
+    serviceConfig = {
+      ProgramArguments = [
+        "${pkgs.bash}/bin/bash"
+        "-c"
+        ''
+          set -uo pipefail
+
+          notify() {
+            local title="$1" body="$2"
+            /opt/homebrew/bin/terminal-notifier -title "$title" -message "$body"
+          }
+
+          # ps の etime (例: "05:54:12" / "1-05:54:12" / "12:34") を秒数に変換
+          etime_to_seconds() {
+            local etime="$1" days=0 rest="$1" h=0 m=0 s=0
+            if [[ "$etime" == *-* ]]; then
+              days="''${etime%%-*}"
+              rest="''${etime#*-}"
+            fi
+            IFS=: read -ra parts <<< "$rest"
+            case "''${#parts[@]}" in
+              3) h="''${parts[0]}"; m="''${parts[1]}"; s="''${parts[2]}" ;;
+              2) m="''${parts[0]}"; s="''${parts[1]}" ;;
+              1) s="''${parts[0]}" ;;
+            esac
+            echo $(( 10#$days*86400 + 10#$h*3600 + 10#$m*60 + 10#$s ))
+          }
+
+          check_stale_live_server() {
+            local max_minutes="$1"
+            while read -r pid etime; do
+              [ -z "$pid" ] && continue
+              local total_seconds total_minutes
+              total_seconds=$(etime_to_seconds "$etime")
+              total_minutes=$(( total_seconds / 60 ))
+              if [ "$total_minutes" -ge "$max_minutes" ]; then
+                kill -9 "$pid" 2>/dev/null
+                notify "live-serverを自動終了しました" "PID ''${pid} が ''${total_minutes}分間起動したままだったため終了しました"
+              fi
+            done < <(ps -axo pid=,etime=,comm= | grep "bin/live-server" | grep -v grep | awk '{print $1, $2}')
+          }
+
+          check_stale_live_server 120
+        ''
+      ];
+      StartInterval = 1800;
+      RunAtLoad = false;
+      StandardOutPath = "/tmp/live-server-watchdog.log";
+      StandardErrorPath = "/tmp/live-server-watchdog.log";
+    };
+  };
+
   # システムのステートバージョン
   system.stateVersion = 5;
 
