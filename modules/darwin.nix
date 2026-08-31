@@ -145,7 +145,9 @@
       extraFlags = [ "--force-cleanup" ];
     };
 
-    taps = [];
+    taps = [
+      "stablyai/orca" # Orca (AIコーディングエージェント並列実行ADE) 用
+    ];
 
     brews = [
       "fluent-bit"          # aarch64-darwin の nixpkgs ビルドが壊れているため
@@ -176,6 +178,7 @@
       "onedrive"
       "raycast"
       "slack"
+      "stablyai/orca/orca"  # 複数のコーディングエージェントを並列実行するADE
       "visual-studio-code"
       "wezterm"
       "zed"

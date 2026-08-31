@@ -31,6 +31,15 @@ let
   graphifySkillClaude = pkgs.runCommand "graphify-skill-claude.md" { } ''
     cp ${pkgs.graphify}/lib/*/site-packages/graphify/skill.md $out
   '';
+
+  # archify スキル（コードベースを解析してアーキテクチャ/ワークフロー/シーケンス図等を生成。
+  # ランタイム依存のない Node.js 製レンダラーのため npm install 不要）
+  archifySrc = pkgs.fetchFromGitHub {
+    owner = "tt-a1i";
+    repo = "archify";
+    rev = "5de7275fe87a66a19d52a4d9b0b3a4f2a5a90115";
+    hash = "sha256-eTqSDb2Vw9a+XxTbjoDzhzRicwkpAcx0N8tBAEwVH1Y=";
+  };
 in
 {
   home.file = {
@@ -51,6 +60,13 @@ in
     # graphify スキル
     ".claude/skills/graphify/SKILL.md" = {
       source = graphifySkillClaude;
+      force = true;
+    };
+
+    # archify スキル
+    ".claude/skills/archify" = {
+      source = "${archifySrc}/archify";
+      recursive = true;
       force = true;
     };
 

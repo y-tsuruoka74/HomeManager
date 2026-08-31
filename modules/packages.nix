@@ -34,6 +34,7 @@ in
     graphify # コード/ドキュメントをナレッジグラフ化する AI コーディングスキル
     llmfit # 手元のRAM/CPU/GPUに合うローカルLLMモデルを判定するTUI/CLI
     hunk # AIエージェントが生成した変更をレビューするターミナル差分ビューアー
+    live-server # HTML/CSS編集をブラウザで自動リロードプレビュー（nvim live-server.nvim用）
 
     # 開発ツール
     ripgrep # 高速ファイル検索
