@@ -86,5 +86,9 @@ in
       source = ./../dotfiles/lazygit/prune-merged-branches.sh;
       force = true;
     };
+    ".config/gh-dash/config.yml" = {
+      source = ./../dotfiles/gh-dash/config.yml;
+      force = true;
+    };
   };
 }
