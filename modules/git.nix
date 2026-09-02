@@ -73,6 +73,19 @@ in
     ];
   };
 
+  # gh CLI の一般設定（~/.config/gh/config.yml）のみ管理する。
+  # 認証トークン（~/.config/gh/hosts.yml）は `hosts` オプションを使わないことで
+  # Nix管理外のまま残し、`gh auth login` で個別に設定する運用を維持する。
+  programs.gh = {
+    enable = true;
+    settings = {
+      git_protocol = "https";
+      aliases = {
+        co = "pr checkout";
+      };
+    };
+  };
+
   home.file = {
     "Library/Application Support/lazygit/config.yml" = {
       source = ./../dotfiles/lazygit/config.yml;
