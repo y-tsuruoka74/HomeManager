@@ -129,6 +129,24 @@ nix flake update
 darwin-rebuild switch --flake .#y-tsuruoka
 ```
 
+### Codex CLI の更新
+
+Codex CLI は Home Manager の `modules/ai/codex.nix` だけで管理します。
+公式の安定版パッケージをバージョンと SHA-256 で固定し、同梱の実行環境も保持します。
+standalone インストーラー・npm・Homebrew での Codex CLI の追加インストールは行いません。
+`~/.codex` の認証・設定・会話履歴・スキルは引き続き保持します。
+
+`nix flake update` ではこの Codex のバージョンは更新されません。更新時は以下を実施します。
+
+1. [公式の最新安定版](https://github.com/openai/codex/releases/latest) を確認する。
+2. `modules/ai/codex.nix` の `codexRelease.version` と、
+   `codex-package-{aarch64,x86_64}-apple-darwin.tar.gz` の各 SHA-256 を更新する。
+   ハッシュは GitHub Releases API の各 asset の `digest` で確認できる。
+3. `task check` で検証し、`task home`（Home Manager のみ）または `task darwin` で適用する。
+4. 新しいターミナルで `type -a codex` と `codex --version` を確認する。
+
+CLI の起動は Home Manager のラッパーを経由し、ステータスラインと hooks の設定を適用します。
+
 ## モジュールの拡張
 
 ### CLI パッケージの追加
