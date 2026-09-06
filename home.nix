@@ -1,9 +1,9 @@
-{ config, pkgs, ... }:
+{ machine, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should manage.
-  home.username = "y-tsuruoka";
-  home.homeDirectory = "/Users/y-tsuruoka";
+  home.username = machine.username;
+  home.homeDirectory = machine.homeDirectory;
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release

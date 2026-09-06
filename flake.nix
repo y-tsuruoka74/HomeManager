@@ -13,14 +13,22 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, ... }:
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      nix-darwin,
+      home-manager,
+      ...
+    }:
     let
-      system = "aarch64-darwin";
+      machine = import ./machine.nix;
+      inherit (machine) system;
     in
     {
-      darwinConfigurations."y-tsuruoka" = nix-darwin.lib.darwinSystem {
+      darwinConfigurations.${machine.username} = nix-darwin.lib.darwinSystem {
         inherit system;
-        specialArgs = { inherit self inputs; };
+        specialArgs = { inherit self inputs machine; };
         modules = [
           ./modules/darwin.nix
           home-manager.darwinModules.home-manager
@@ -28,8 +36,8 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.users.y-tsuruoka = import ./home.nix;
-            home-manager.extraSpecialArgs = { inherit self inputs; };
+            home-manager.users.${machine.username} = import ./home.nix;
+            home-manager.extraSpecialArgs = { inherit self inputs machine; };
           }
         ];
       };
@@ -37,12 +45,12 @@
       # home.nix 配下（packages.nix, ai/ 等）のみを sudo なしで適用するための単体構成。
       # Homebrew/launchd watchdog/システム設定など darwin.nix 側の変更は
       # 引き続き `sudo darwin-rebuild switch` が必要。
-      homeConfigurations."y-tsuruoka" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.${machine.username} = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
         };
-        extraSpecialArgs = { inherit self inputs; };
+        extraSpecialArgs = { inherit self inputs machine; };
         modules = [ ./home.nix ];
       };
     };

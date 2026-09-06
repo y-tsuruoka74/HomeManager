@@ -179,7 +179,10 @@ let
   };
 in
 {
-  home.packages = [ opencodeConfigSync ];
+  home.packages = [
+    pkgs.opencode
+    opencodeConfigSync
+  ];
 
   home.activation.opencodeConfigSync = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     ${opencodeConfigSync}/bin/opencode-config-sync

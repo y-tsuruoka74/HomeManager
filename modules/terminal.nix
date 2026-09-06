@@ -1,6 +1,10 @@
 { pkgs, ... }:
 
 {
+  home.packages = [
+    pkgs.zellij
+    pkgs.herdr
+  ];
   home.file = {
     ".config/wezterm/wezterm.lua" = {
       source = ./../dotfiles/wezterm/wezterm.lua;

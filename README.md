@@ -12,10 +12,12 @@ nix-darwin + Home Manager で macOS 環境全体を管理するリポジトリ�
 ```
 .
 ├── flake.nix            # Nix Flake 設定（nix-darwin + home-manager）
+├── machine.nix          # ユーザー名・ホーム・アーキテクチャの共通定義
 ├── home.nix             # Home Manager メイン設定
 ├── modules/             # モジュール
-│   ├── darwin.nix       # nix-darwin システム設定・Homebrew 管理
-│   ├── packages.nix     # パッケージ管理
+│   ├── darwin.nix       # darwin/ の読み込み
+│   ├── darwin/          # system.nix / homebrew.nix / services.nix
+│   ├── packages.nix     # 設定を持たない汎用CLI
 │   ├── zsh.nix          # zsh・starship・zoxide・fzf・direnv 設定
 │   ├── git.nix          # Git・lazygit 設定
 │   ├── editor.nix       # Neovim 設定（programs + dotfiles）
@@ -60,6 +62,9 @@ nix-darwin + Home Manager で macOS 環境全体を管理するリポジトリ�
 │   │   └── herdr-agent-state.sh   # herdr連携スクリプト
 │   └── nix/
 │       └── devshell.nix # Nix devshell テンプレート
+├── scripts/             # 監視処理・設定マージ
+├── tests/               # 判断ロジックの回帰テスト
+├── Taskfile.yml         # 整形・検証・適用タスク
 └── README.md            # このファイル
 ```
 
@@ -67,14 +72,34 @@ nix-darwin + Home Manager で macOS 環境全体を管理するリポジトリ�
 
 | 対象 | 管理方法 |
 |---|---|
-| CLI ツール（ripgrep, lazygit 等） | Home Manager（`packages.nix`） |
+| 汎用CLI（ripgrep 等） | Home Manager（`packages.nix`） |
+| 設定を持つCLI（lazygit 等） | Home Manager（対応する機能モジュール） |
 | シェル・Git・Neovim 設定 | Home Manager（各モジュール） |
 | Hammerspoon・gwq 等の dotfiles | Home Manager（`apps.nix`） |
 | tmux・zellij・wezterm・herdr dotfiles | Home Manager（`terminal.nix`） |
 | Claude/Codex/Copilot/OpenCode/Pi dotfiles | Home Manager（`ai/`） |
-| Homebrew formulae（borders 等） | nix-darwin（`darwin.nix`） |
-| Homebrew casks（1password, wezterm 等） | nix-darwin（`darwin.nix`） |
-| macOS システム設定 | nix-darwin（`darwin.nix`） |
+| Homebrew formulae / casks | nix-darwin（`darwin/homebrew.nix`） |
+| macOS システム設定 | nix-darwin（`darwin/system.nix`） |
+| 定期実行・プロセス監視 | nix-darwin（`darwin/services.nix`）と `scripts/process_watchdog.py` |
+
+設定とパッケージ・専用ラッパーは同じ機能モジュールに置きます。
+静的dotfilesは `home.file`、アプリが更新するファイルは管理対象部分だけを更新する処理を使います。
+Copilotは所有するHerdrコマンドだけを差し替え、他のイベント・同じイベントの別フックを保持します。
+OpenCodeは宣言した設定全体を生成するため、変更は `modules/ai/opencode.nix` に記述します。
+APIキーは従来どおりGit管理外の `secrets.json` に置きます。
+
+lazygit監視は15分ごとのCPU観測が30%以上のまま60分継続した場合に終了します。
+観測間隔が30分を超えた場合・低CPU・プロセスの消滅やPID再利用では履歴をリセットします。
+これは観測点での判定であり、その間のCPU使用率の連続測定ではありません。
+履歴は `~/.local/state/process-watchdog/lazygit.json`、live-serverの終了条件は従来どおり起動後120分です。
+
+### 変更の検証
+
+新規ファイルを `git add` してから、`task check` で整形・静的解析・回帰テスト・両構成のビルドを実行します。
+検証は設定を適用しません。個別には `task fmt`、`task lint`、`task test`、
+`task build:home`、`task build:darwin` を使えます。
+必要なツールは既存構成に含む `go-task`、`nixfmt`、`statix`、`python3`、`jq`、`zsh` です。
+statixの `repeated_keys` は、用途ごとにドット区切りのオプションを記述する規約に合わせて無効にしています。
 
 ## 初期セットアップ
 
@@ -301,7 +326,7 @@ nix run nix-darwin -- switch --flake .#y-tsuruoka
 
 ### アーキテクチャの確認
 
-`flake.nix` と `darwin.nix` の `system` / `nixpkgs.hostPlatform` を確認:
+`machine.nix` の `system` を確認（Darwinと単体Home Managerの両方に渡されます）:
 
 - Apple Silicon (M1/M2/M3...): `aarch64-darwin`
 - Intel Mac: `x86_64-darwin`

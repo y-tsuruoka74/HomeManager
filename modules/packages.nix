@@ -1,16 +1,9 @@
-{ config, pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  ...
+}:
 
-let
-  # ~/.codex/config.toml は Codex アプリ側でも更新されるため、ファイル全体を
-  # Home Manager で管理せず、CLI 起動時にステータスラインだけを上書きする。
-  # Codex のステータスラインは1行のみのため、狭いpaneでも利用状況が残る順に並べる。
-  codexWithUsage = pkgs.writeShellScriptBin "codex" ''
-    exec ${pkgs.codex}/bin/codex \
-      -c 'tui.status_line=["model-with-reasoning","context-remaining","five-hour-limit","weekly-limit","project-name","git-branch","total-input-tokens","total-output-tokens"]' \
-      -c 'features.hooks=true' \
-      "$@"
-  '';
-in
 {
   home.packages = with pkgs; [
     # プログラム言語
@@ -25,19 +18,13 @@ in
     tree
 
     # 環境管理
-    inputs.home-manager.packages.${pkgs.system}.default # `home-manager switch` を単体実行するためのCLI（`task home`用、sudo不要）
+    inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default # `task home` 用のCLI
 
     # AI ツール
-    claude-code # Claude Code CLI
     ollama # ローカル LLM ランナー
-    github-copilot-cli # GitHub Copilot CLI
-    codexWithUsage # OpenAI Codex CLI（モデル・コンテキスト・利用量を常時表示）
-    herdr # ターミナル常駐の AI エージェントマルチプレクサ
-    pi-coding-agent # 最小主義のコーディングエージェント CLI（拡張機能で機能を足していく設計）
     graphify # コード/ドキュメントをナレッジグラフ化する AI コーディングスキル
     llmfit # 手元のRAM/CPU/GPUに合うローカルLLMモデルを判定するTUI/CLI
     hunk # AIエージェントが生成した変更をレビューするターミナル差分ビューアー
-    live-server # HTML/CSS編集をブラウザで自動リロードプレビュー（nvim live-server.nvim用）
 
     # 開発ツール
     ripgrep # 高速ファイル検索
@@ -63,7 +50,6 @@ in
     markdownlint-cli2 # Markdown linter/formatter
     marp-cli # Markdown からスライド生成
     ansible # 構成管理ツール
-    opencode # AI コーディングエージェント CLI
 
     # Kubernetes / インフラツール
     kubernetes-helm # helm
@@ -79,16 +65,11 @@ in
     # Lua
     luarocks # Lua パッケージマネージャ
 
-    # Git 関連
-    ghq # リポジトリ管理
-    gwq # Git worktree 管理（fuzzy finder 付き）
-    gh # GitHub CLI
-    lazygit # Git ターミナル UI
+    # Docker
     lazydocker # Docker ターミナル UI
 
     # その他 CLI ツール
     peco # 対話的フィルタリングツール
-    zellij # ターミナルセッションマネージャ
     tree-sitter # パーサージェネレーター
     go-task # タスクランナー (task)
     pkgconf # パッケージ設定ツール
@@ -103,9 +84,6 @@ in
     # HTTP ツール
     xh # HTTP クライアント
     hey # HTTP ベンチマークツール
-
-    # 画像
-    imagemagick # nvim (snacks.nvim image) からの画像変換・ラスタライズ用（magick/convert CLI）
 
     # その他
     crush # Glamourous AI coding agent

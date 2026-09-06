@@ -1,21 +1,6 @@
 # 追加のシェル設定
 
-# エイリアス
-alias ll='eza -la'
-alias ls='eza'
-alias la='eza -a'
-alias lt='eza --tree'
-alias cat='bat'
-alias grep='rg'
-alias find='fd'
-alias du='dust'
-alias top='btm'
-alias htop='btm'
-
-# 環境変数
-export EDITOR='nvim'
-export LANG='ja_JP.UTF-8'
-export PATH="$HOME/.local/bin:$PATH"
+# エイリアス・環境変数・direnv統合は modules/zsh.nix で管理する。
 
 # GitHub トークン（aipf-cpanel 用）
 # 注意: 本番環境では環境変数マネージャーを使用してください
@@ -31,9 +16,6 @@ export PATH="$HOME/.local/bin:$PATH"
 GH_TOKEN="$(security find-generic-password -a "$USER" -s copilot-github-token -w 2>/dev/null)"
 [[ -n "$GH_TOKEN" ]] && export GH_TOKEN
 
-# direnv
-eval "$(direnv hook zsh)"
-
 # sheldon (プラグインマネージャー)
 # 使用する場合、以下のコメントを外してください
 # eval "$(sheldon source)"
@@ -47,7 +29,7 @@ eval "$(task --completion zsh)"
 # 無条件 include ファイル) をそのプロファイルへのシンボリックリンクに切り替える。
 # 引数無しなら現在のプロファイルと利用可能な一覧を表示する。
 function git-user() {
-  local identities_dir="$HOME/.config/git/identities"
+  local identities_dir="${GIT_IDENTITIES_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/git/identities}"
   local identity_file="$HOME/.gitconfig.identity"
 
   if [ -z "$1" ]; then
@@ -77,7 +59,7 @@ function git-user() {
 
 _git_user_profiles() {
   local -a profiles
-  profiles=(${(f)"$(ls "$HOME/.config/git/identities" 2>/dev/null | sed 's/\.gitconfig$//')"})
+  profiles=(${(f)"$(ls "${GIT_IDENTITIES_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/git/identities}" 2>/dev/null | sed 's/\.gitconfig$//')"})
   _describe 'profile' profiles
 }
 compdef _git_user_profiles git-user

@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 {
+  home.packages = [ pkgs.pi-coding-agent ];
   home.file = {
     # herdr連携: pi-coding-agentのライフサイクル状態とセッションIDを直接通知する。
     ".pi/agent/extensions/herdr-agent-state.ts" = {

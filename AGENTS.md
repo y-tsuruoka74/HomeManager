@@ -43,7 +43,8 @@ cat ~/.local/state/home-manager/home-manager.log
 ├── flake.nix            # Nix Flake 設定（nix-darwin + home-manager）
 ├── home.nix             # Home Manager メイン設定
 ├── modules/             # モジュール
-│   ├── darwin.nix       # nix-darwin システム設定・Homebrew 管理
+│   ├── darwin.nix       # darwin/ の読み込み
+│   ├── darwin/          # system.nix / homebrew.nix / services.nix
 │   ├── packages.nix     # パッケージ管理
 │   ├── zsh.nix          # zsh 設定（starship, fzf, zoxide, direnv 統合）
 │   ├── git.nix          # Git・lazygit 設定
@@ -82,7 +83,11 @@ cat ~/.local/state/home-manager/home-manager.log
 ### モジュール構成
 
 - **home.nix**: 基本設定と imports のみ
-- **modules/darwin.nix**: nix-darwin システム設定・Homebrew 管理
+- **modules/darwin.nix**: darwin/ 配下のシステム・Homebrew・サービス設定を読み込む
+- **machine.nix**: ユーザー名・ホーム・アーキテクチャの共通定義
+- **scripts/**: 監視処理・設定マージ。判断処理は tests/ で検証
+- 設定を持つパッケージは対応モジュールに置き、packages.nix は汎用CLIのみ
+- 検証は `task check`（整形・静的解析・回帰テスト・両構成のビルド）
 - **modules/**: 設定を機能別に分割
 - **dotfiles/**: Home Manager モジュール化が難しい設定や複雑な設定ファイル
 
@@ -98,7 +103,7 @@ git add <新しいファイル>
 
 ### アーキテクチャ設定
 
-`flake.nix` と `darwin.nix` の `system` / `nixpkgs.hostPlatform` を環境に合わせる:
+`machine.nix` の `system` を環境に合わせる:
 
 - Apple Silicon (M1/M2/M3...): `aarch64-darwin`
 - Intel Mac: `x86_64-darwin`

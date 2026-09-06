@@ -1,7 +1,22 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
+  home.sessionVariables.LANG = "ja_JP.UTF-8";
+  home.sessionPath = [ "${config.home.homeDirectory}/.local/bin" ];
+
   programs.zsh = {
+    shellAliases = {
+      ll = "eza -la";
+      ls = "eza";
+      la = "eza -a";
+      lt = "eza --tree";
+      cat = "bat";
+      grep = "rg";
+      find = "fd";
+      du = "dust";
+      top = "btm";
+      htop = "btm";
+    };
     enable = true;
     enableCompletion = true;
     autosuggestion.enable = true;
@@ -35,6 +50,7 @@
   # direnv（インストール + shell 統合 + nix-direnv）
   programs.direnv = {
     enable = true;
+    enableZshIntegration = true;
     nix-direnv.enable = true;
   };
 
@@ -42,7 +58,7 @@
   programs.starship = {
     enable = true;
     settings = {
-      add_newline = true ;
+      add_newline = true;
       command_timeout = 1000;
       format = "$directory$git_branch\${custom.git_user}$git_commit$git_state$git_status$nix_shell$cmd_duration$jobs$line_break$character";
       directory = {

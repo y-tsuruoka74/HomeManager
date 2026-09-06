@@ -1,6 +1,7 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
+  home.packages = [ pkgs.gwq ];
   home.file = {
     ".hammerspoon/init.lua" = {
       source = ./../dotfiles/hammerspoon/init.lua;

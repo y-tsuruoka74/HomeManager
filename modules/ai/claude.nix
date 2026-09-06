@@ -42,6 +42,7 @@ let
   };
 in
 {
+  home.packages = [ pkgs.claude-code ];
   home.file = {
     # superpowers Claude Code プラグイン
     ".claude/plugins/superpowers" = {

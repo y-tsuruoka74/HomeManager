@@ -1,0 +1,2 @@
+# Nix modules group settings by purpose, using dotted option paths throughout.
+disabled = ["repeated_keys"]

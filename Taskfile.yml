@@ -1,6 +1,38 @@
 version: '3'
 
+vars:
+  PROFILE:
+    sh: nix eval --raw --file machine.nix username
+
 tasks:
+  fmt:
+    desc: Nix ファイルを整形する
+    cmds:
+      - nixfmt flake.nix machine.nix home.nix modules/*.nix modules/ai/*.nix modules/darwin/*.nix
+
+  lint:
+    desc: Nix の整形・静的解析と zsh の構文を確認する
+    cmds:
+      - nixfmt --check flake.nix machine.nix home.nix modules/*.nix modules/ai/*.nix modules/darwin/*.nix
+      - statix check .
+      - zsh -n dotfiles/zsh/extra.zsh
+      - zsh -n dotfiles/zsh/prompt.zsh
+
+  test:
+    desc: 設定マージと監視判定の回帰テスト（jq と python3 が必要）
+    cmds:
+      - python3 -B -m unittest discover -s tests -v
+
+  build:home:
+    desc: 単体 Home Manager 構成をビルドする（適用しない）
+    cmds:
+      - nix build --no-link '.#homeConfigurations.{{.PROFILE}}.activationPackage'
+
+  build:darwin:
+    desc: Darwin 構成をビルドする（適用しない）
+    cmds:
+      - nix build --no-link '.#darwinConfigurations.{{.PROFILE}}.system'
+
   default:
     desc: 利用可能なタスク一覧を表示する
     cmds:
@@ -8,19 +40,23 @@ tasks:
     silent: true
 
   check:
-    desc: flake全体の構文・評価チェック（システムには一切適用しない）
+    desc: 静的解析・回帰テスト・両構成のビルド（適用しない）
     cmds:
+      - task: lint
+      - task: test
       - nix flake check
+      - task: build:home
+      - task: build:darwin
 
   home:
     desc: home.nix配下（packages.nix, ai/ 等）のみをsudoなしで適用する
     cmds:
-      - home-manager switch --flake .#y-tsuruoka
+      - home-manager switch --flake '.#{{.PROFILE}}'
 
   darwin:
     desc: システム全体（Homebrew, launchd watchdog等）を適用する。sudoが必要
     cmds:
-      - sudo darwin-rebuild switch --flake .#y-tsuruoka
+      - sudo darwin-rebuild switch --flake '.#{{.PROFILE}}'
 
   update:
     desc: flake.lock の入力を更新する
