@@ -23,6 +23,23 @@ GH_TOKEN="$(security find-generic-password -a "$USER" -s copilot-github-token -w
 # go-task (タスクランナー)
 eval "$(task --completion zsh)"
 
+# HomeManager の構成選択。通常のタスク名・オプションは標準補完へ委譲する。
+_task_home_manager() {
+  if [[ -f Taskfile.yml && -f hosts/work.nix && -f hosts/personal.nix ]] &&
+    [[ ${words[2]} == (home|build:home|darwin|build:darwin) && CURRENT -eq 3 ]]; then
+    if [[ $PREFIX == PROFILE=* ]]; then
+      compset -P 'PROFILE='
+      compadd work personal
+      return
+    elif [[ -z $PREFIX || $PREFIX == P* ]]; then
+      compadd 'PROFILE=work' 'PROFILE=personal'
+      return
+    fi
+  fi
+  _task "$@"
+}
+compdef _task_home_manager task
+
 # Git ユーザー切り替え
 # ~/.config/git/identities/<名前>.gitconfig にプロファイルを置いておくと、
 # `git-user <名前>` で ~/.gitconfig.identity (git.nix から include される

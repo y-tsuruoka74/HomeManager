@@ -159,9 +159,49 @@ home.packages = with pkgs; [
 ];
 ```
 
+### 個人用・会社用 Mac の使い分け
+
+共通アプリは `modules/darwin/homebrew.nix`、個人用は `hosts/personal.nix`、
+会社用は `hosts/work.nix` で管理します。TradingView は個人用にのみ含まれます。
+ユーザー名・ホームディレクトリ・アーキテクチャは、どの構成でも `machine.nix` を参照します。
+
+```bash
+# 個人用 Mac: ビルド確認後に適用
+task build:darwin PROFILE=personal
+task darwin PROFILE=personal
+
+# 会社用 Mac
+task build:darwin PROFILE=work
+task darwin PROFILE=work
+```
+
+Home Manager の共通設定は `home.nix`、会社用は `hosts/home-work.nix`、
+個人用は `hosts/home-personal.nix` で管理します。現在は両方とも共通設定のみです。
+Darwin への一括適用でも、選んだ構成と同じ Home Manager 設定が使われます。
+
+```bash
+# Home Manager のみ確認・適用（会社用がデフォルト）
+task build:home
+task home
+
+# 個人用
+task build:home PROFILE=personal
+task home PROFILE=personal
+```
+
+`task home`・`task darwin` と各 `build:` タスクは、引数なしでは会社用の `work` を選びます。
+既存の `.#y-tsuruoka` は共通設定のみです。
+構成名にかかわらず、設定対象のユーザーは `machine.nix` のユーザー名です。
+zsh ではリポジトリ直下で `task home `・`task darwin `・各 `build:` タスクの後に Tab を押すと、
+`PROFILE=work` と `PROFILE=personal` を補完できます（`task home` で反映後、新しいシェルで有効）。
+端末の自動判別はしないため、会社用 Mac では `personal` を指定しないでください。
+個人用 Mac では毎回 `PROFILE=personal` を指定してください。共通・会社用構成へ
+切り替えると、`cleanup = "uninstall"` により TradingView は削除対象になります。
+`task home` は Homebrew アプリを変更しません。
+
 ### Homebrew cask の追加
 
-`modules/darwin.nix` の `homebrew.casks` に追加:
+`modules/darwin/homebrew.nix` の `homebrew.casks` に追加:
 
 ```nix
 homebrew.casks = [
