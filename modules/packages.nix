@@ -86,6 +86,7 @@ in
     gh-dash # GitHub CLI拡張: PR/Issueをターミナルでダッシュボード表示
     gh-poi # GitHub CLI拡張: マージ済み/削除済みのローカルブランチを安全に一括削除
     gh-notify # GitHub CLI拡張: GitHub通知をターミナルで確認
+    gh-stack # GitHub CLI拡張: スタックPR（パブリックプレビュー）のローカル再ベース・作成を自動化
     lazygit # Git ターミナル UI
     lazydocker # Docker ターミナル UI
 
