@@ -65,7 +65,15 @@
     # Lua
     luarocks # Lua パッケージマネージャ
 
-    # Docker
+    # Git 関連
+    ghq # リポジトリ管理
+    gwq # Git worktree 管理（fuzzy finder 付き）
+    # gh (GitHub CLI) 本体は modules/git.nix の programs.gh.enable が導入する
+    gh-dash # GitHub CLI拡張: PR/Issueをターミナルでダッシュボード表示
+    gh-poi # GitHub CLI拡張: マージ済み/削除済みのローカルブランチを安全に一括削除
+    gh-notify # GitHub CLI拡張: GitHub通知をターミナルで確認
+    gh-stack # GitHub CLI拡張: スタックPR（パブリックプレビュー）のローカル再ベース・作成を自動化
+    lazygit # Git ターミナル UI
     lazydocker # Docker ターミナル UI
 
     # その他 CLI ツール

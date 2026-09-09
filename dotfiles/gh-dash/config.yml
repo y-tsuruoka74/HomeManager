@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://gh-dash.dev/schema.json
+
+prSections:
+  - title: 自分が作成したPR
+    filters: is:open author:@me
+
+  - title: レビュー依頼されているPR
+    filters: is:open review-requested:@me
+
+  - title: 最近のクローズ済みPR
+    filters: is:closed author:@me
+
+issuesSections:
+  - title: アサインされているIssue
+    filters: is:open assignee:@me
+
+  - title: 自分が作成したIssue
+    filters: is:open author:@me
+
+defaults:
+  view: prs
+  prsLimit: 20
+  issuesLimit: 20
+  preview:
+    open: true
+    width: 60
+
+theme:
+  ui:
+    table:
+      showSeparator: true

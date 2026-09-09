@@ -7,10 +7,10 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # AI provider and model can be overridden per shell/session.
 #   LAZYGIT_COMMIT_AI_PROVIDER=auto|claude|codex
-#   LAZYGIT_COMMIT_CODEX_MODEL=gpt-5.4-mini
+#   LAZYGIT_COMMIT_CODEX_MODEL=gpt-5.6-luna
 #   LAZYGIT_COMMIT_CODEX_REASONING=low|medium|high|xhigh
 AI_PROVIDER="${LAZYGIT_COMMIT_AI_PROVIDER:-auto}"
-CODEX_MODEL="${LAZYGIT_COMMIT_CODEX_MODEL:-gpt-5.4-mini}"
+CODEX_MODEL="${LAZYGIT_COMMIT_CODEX_MODEL:-gpt-5.6-luna}"
 CODEX_REASONING="${LAZYGIT_COMMIT_CODEX_REASONING:-low}"
 
 if git diff --staged --quiet; then
@@ -49,11 +49,16 @@ generate_with_codex() {
 
   OUTPUT_FILE=$(mktemp)
   trap 'rm -f "$OUTPUT_FILE"' EXIT
+  # Pass optional arguments through "$@" to support macOS Bash with nounset.
+  set --
+  if [ -n "$CODEX_MODEL" ]; then
+    set -- --model "$CODEX_MODEL"
+  fi
   git diff --staged | codex exec \
     --ephemeral \
     --sandbox read-only \
     --color never \
-    --model "$CODEX_MODEL" \
+    "$@" \
     --config "model_reasoning_effort=\"$CODEX_REASONING\"" \
     --output-last-message "$OUTPUT_FILE" \
     "$AI_PROMPT" || return 1

@@ -14,6 +14,7 @@
   imports = [
     ./modules/packages.nix
     ./modules/zsh.nix
+    ./modules/nushell.nix
     ./modules/git.nix
     ./modules/editor.nix
     ./modules/terminal.nix

@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 vars:
   PROFILE:
@@ -51,7 +51,7 @@ tasks:
   home:
     desc: home.nix配下（packages.nix, ai/ 等）のみをsudoなしで適用する
     cmds:
-      - home-manager switch --flake '.#{{.PROFILE}}'
+      - home-manager switch --flake .#y-tsuruoka -b backup
 
   darwin:
     desc: システム全体（Homebrew, launchd watchdog等）を適用する。sudoが必要
