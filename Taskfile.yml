@@ -59,6 +59,29 @@ tasks:
     cmds:
       - sudo darwin-rebuild switch --flake '.#{{.PROFILE}}'
 
+  nh:build:
+    desc: nh で Darwin 構成をビルドし現行世代との差分を表示する（適用しない）
+    cmds:
+      - nh darwin build . -H '{{.PROFILE}}'
+
+  nh:darwin:
+    desc: nh で Darwin 構成を差分確認のうえ適用する（nh が必要時に sudo を呼ぶ）
+    interactive: true
+    cmds:
+      - nh darwin switch . -H '{{.PROFILE}}' --ask
+
+  nh:home:
+    desc: nh で単体 Home Manager 構成を差分確認のうえ適用する
+    interactive: true
+    cmds:
+      - nh home switch . -c '{{.PROFILE}}' --ask -b backup
+
+  nh:clean:
+    desc: nh で古い世代を整理する（直近5世代か7日以内は残す）
+    interactive: true
+    cmds:
+      - nh clean all --keep 5 --keep-since 7d --ask
+
   update:
     desc: flake.lock の入力を更新する
     cmds:

@@ -177,10 +177,31 @@ let
       trap - EXIT
     '';
   };
+
+  # nixpkgs の opencode は ad-hoc署名ビルドのため、社用Mac上で
+  # Microsoft Defenderにkillされる(SIGKILL)。公式がnpmレジストリで配布している
+  # Developer ID署名済みバイナリをそのまま取得し、Nixの標準fixupPhase
+  # （strip/再署名等、署名を壊す）を dontFixup で無効化して配置する。
+  opencodeCliVersion = "2.0.21";
+  opencodeCli = pkgs.stdenv.mkDerivation {
+    pname = "opencode-cli";
+    version = opencodeCliVersion;
+    src = pkgs.fetchurl {
+      url = "https://registry.npmjs.org/@opencode/cli-darwin-arm64/-/cli-darwin-arm64-${opencodeCliVersion}.tgz";
+      hash = "sha512-dspUnJ767TClh6LqJ0y4/V1EbGVDjfmWsp+AJjLxhGR47q/ySvzZz2tNIDbX/q8lHC1Cpj3sUBdZ/6Vk8rOBSw==";
+    };
+    dontBuild = true;
+    dontFixup = true;
+    installPhase = ''
+      mkdir -p $out/bin
+      cp bin/opencode $out/bin/opencode
+      chmod +x $out/bin/opencode
+    '';
+  };
 in
 {
   home.packages = [
-    pkgs.opencode
+    opencodeCli
     opencodeConfigSync
   ];
 

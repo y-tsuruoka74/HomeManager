@@ -26,7 +26,7 @@ eval "$(task --completion zsh)"
 # HomeManager の構成選択。通常のタスク名・オプションは標準補完へ委譲する。
 _task_home_manager() {
   if [[ -f Taskfile.yml && -f hosts/work.nix && -f hosts/personal.nix ]] &&
-    [[ ${words[2]} == (home|build:home|darwin|build:darwin) && CURRENT -eq 3 ]]; then
+    [[ ${words[2]} == (home|build:home|darwin|build:darwin|nh:build|nh:home|nh:darwin) && CURRENT -eq 3 ]]; then
     if [[ $PREFIX == PROFILE=* ]]; then
       compset -P 'PROFILE='
       compadd work personal
