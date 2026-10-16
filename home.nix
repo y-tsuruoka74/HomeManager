@@ -17,6 +17,7 @@
     ./modules/nushell.nix
     ./modules/git.nix
     ./modules/nh.nix
+    ./modules/nix-index.nix
     ./modules/editor.nix
     ./modules/terminal.nix
     ./modules/ai

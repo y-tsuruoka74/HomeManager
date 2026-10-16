@@ -14,6 +14,7 @@ tasks:
     cmds:
       - nixfmt --check flake.nix machine.nix home.nix hosts/*.nix modules/*.nix modules/ai/*.nix modules/darwin/*.nix
       - statix check .
+      - deadnix --fail --no-lambda-pattern-names .
       - zsh -n dotfiles/zsh/extra.zsh
       - zsh -n dotfiles/zsh/prompt.zsh
 

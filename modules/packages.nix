@@ -47,6 +47,8 @@
     nil # Nix language server
     nixfmt # Nix formatter
     statix # Nix linter
+    deadnix # 未使用の Nix 束縛を検出
+    nix-tree # クロージャの依存ツリーとサイズを閲覧する TUI
     markdownlint-cli2 # Markdown linter/formatter
     marp-cli # Markdown からスライド生成
     ansible # 構成管理ツール
