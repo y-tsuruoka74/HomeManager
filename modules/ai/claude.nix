@@ -40,6 +40,14 @@ let
     rev = "5de7275fe87a66a19d52a4d9b0b3a4f2a5a90115";
     hash = "sha256-eTqSDb2Vw9a+XxTbjoDzhzRicwkpAcx0N8tBAEwVH1Y=";
   };
+
+  # show-me スキル（HumanLayer製。説明を疑似コード/コールツリー/Mermaid等の軽量な図で返す）
+  humanlayerSkillsSrc = pkgs.fetchFromGitHub {
+    owner = "humanlayer";
+    repo = "skills";
+    rev = "653b6411c1f70c275a18e37673b042ff99f67ceb";
+    hash = "sha256-W3dFEdIi4sz4CAZvaj1xjtN7xTRebF/WHOTQYCIe2Xo=";
+  };
 in
 {
   home.packages = [ pkgs.claude-code ];
@@ -67,6 +75,13 @@ in
     # archify スキル
     ".claude/skills/archify" = {
       source = "${archifySrc}/archify";
+      recursive = true;
+      force = true;
+    };
+
+    # show-me スキル
+    ".claude/skills/show-me" = {
+      source = "${humanlayerSkillsSrc}/plugins/show-me/skills/show-me";
       recursive = true;
       force = true;
     };
