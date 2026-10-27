@@ -94,6 +94,7 @@
     # HTTP ツール
     xh # HTTP クライアント
     hey # HTTP ベンチマークツール
+    bruno-cli # Bruno（API クライアント）の CLI。`bru run` でコレクションを実行
 
     # その他
     crush # Glamourous AI coding agent
