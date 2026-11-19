@@ -64,6 +64,12 @@ in
       pull.rebase = false;
       merge.conflictstyle = "zdiff3";
       url."git@github.com:".insteadOf = "https://github.com/";
+
+      # 1Password の SSH キーでコミット署名する
+      # user.signingkey はアカウントごとに異なるため identity ファイル側で指定する
+      gpg.format = "ssh";
+      gpg.ssh.program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
+      commit.gpgsign = true;
     };
     includes = [
       # user.name/email はマシンごとに異なるため Nix 管理から外し、

@@ -2,6 +2,8 @@ version: "3"
 
 vars:
   PROFILE: work
+  # git-user 関数（dotfiles/zsh/extra.zsh）を読み込んで実行するためのシェル
+  GIT_USER_SH: zsh -c 'source dotfiles/zsh/extra.zsh 2>/dev/null; git-user "$@"' git-user
 
 tasks:
   fmt:
@@ -32,6 +34,50 @@ tasks:
     desc: Darwin 構成をビルドする（適用しない）
     cmds:
       - nix build --no-link '.#darwinConfigurations.{{.PROFILE}}.system'
+
+  git:identities:
+    desc: git プロファイル（user.name/email/signingkey）の一覧と現在のデフォルトを表示する
+    cmds:
+      - '{{.GIT_USER_SH}} list'
+
+  git:whoami:
+    desc: カレントディレクトリで有効な git ユーザー・署名設定を表示する
+    cmds:
+      - git config --show-origin --get-regexp '^(user\.(name|email|signingkey)|gpg\.|commit\.gpgsign|tag\.gpgsign)'
+
+  git:identity:add:
+    desc: "git プロファイルを作成・更新する（例: task git:identity:add -- personal --name N --email E --signingkey K）"
+    interactive: true
+    cmds:
+      - '{{.GIT_USER_SH}} add {{.CLI_ARGS}}'
+
+  git:identity:use:
+    desc: "デフォルトの git プロファイルを切り替える（例: task git:identity:use -- work）"
+    cmds:
+      - '{{.GIT_USER_SH}} {{.CLI_ARGS}}'
+
+  git:sign:check:
+    desc: 署名設定を検査し、一時リポジトリで署名付きコミットを作って確認する（1Password の承認が出る）
+    interactive: true
+    cmds:
+      - |
+        set -e
+        [ "$(git config gpg.format)" = ssh ] || { echo "NG: gpg.format が ssh ではありません"; exit 1; }
+        [ "$(git config commit.gpgsign)" = true ] || { echo "NG: commit.gpgsign が true ではありません"; exit 1; }
+        key="$(git config user.signingkey)" || { echo "NG: user.signingkey が未設定です（task git:identities で確認）"; exit 1; }
+        prog="$(git config gpg.ssh.program)"
+        [ -x "$prog" ] || { echo "NG: gpg.ssh.program が実行できません: $prog"; exit 1; }
+        echo "設定 OK: $(git config user.name) <$(git config user.email)>"
+        tmp="$(mktemp -d)"
+        trap 'rm -rf "$tmp"' EXIT
+        git -C "$tmp" init -q
+        git -C "$tmp" -c user.name="$(git config user.name)" -c user.email="$(git config user.email)" \
+          commit -q --allow-empty -m "signing test"
+        if git -C "$tmp" cat-file commit HEAD | grep -q '^gpgsig '; then
+          echo "OK: 署名付きコミットを作成できました"
+        else
+          echo "NG: コミットに署名が付いていません"; exit 1
+        fi
 
   default:
     desc: 利用可能なタスク一覧を表示する

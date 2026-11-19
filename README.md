@@ -298,6 +298,14 @@ cat > ~/.config/git/identities/personal.gitconfig << 'EOF'
 EOF
 ```
 
+`git-user add` で CLI から作成・更新することもできる（未指定の項目は新規作成時に対話入力）。
+`--signingkey` には 1Password の SSH 鍵の公開鍵を指定する（コミット署名用）。
+
+```bash
+git-user add personal --name "<名前>" --email "<メール>" \
+  --signingkey "ssh-ed25519 AAAA..." --login "<GitHubログイン名>"
+```
+
 ### プロファイルの切り替え（手動）
 
 `dotfiles/zsh/extra.zsh` で定義している `git-user` 関数を使う。
