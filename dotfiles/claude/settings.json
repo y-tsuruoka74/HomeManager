@@ -33,6 +33,9 @@
       "Bash(gh status)",
       "Bash(gh auth status*)"
     ],
+    "ask": [
+      "Bash(gh issue create*)"
+    ],
     "deny": [
       "Bash(gh pr create*)",
       "Bash(gh pr edit*)",
@@ -44,7 +47,6 @@
       "Bash(gh pr ready*)",
       "Bash(gh pr lock*)",
       "Bash(gh pr unlock*)",
-      "Bash(gh issue create*)",
       "Bash(gh issue edit*)",
       "Bash(gh issue close*)",
       "Bash(gh issue reopen*)",

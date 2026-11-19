@@ -5,7 +5,10 @@
 # GitHub トークン（aipf-cpanel 用）
 # 注意: 本番環境では環境変数マネージャーを使用してください
 # export NODE_AUTH_TOKEN="your_token_here"
-# export NPM_TOKEN="your_token_here"
+if command -v gh >/dev/null 2>&1; then
+  NPM_TOKEN="$(gh auth token --hostname github.sakura.codes 2>/dev/null)"
+  [[ -n "$NPM_TOKEN" ]] && export NPM_TOKEN || unset NPM_TOKEN
+fi
 
 # Copilot CLI 用 GitHub トークン
 # security（署名済み標準コマンド）でキーチェーンから読み込むことで、
